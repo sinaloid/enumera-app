@@ -1,0 +1,5 @@
+.load-container,.logo-container {
+    height: 100vh;
+    color: var(--ion-color-primary);
+    font-weight: bold;
+  }

@@ -1,0 +1,109 @@
+:root {
+  --font-size-title-1: 2rem;
+  --font-size-title-2: 1.75rem;
+  --font-size-title-3: 1.5rem;
+  --font-size-subtitle-1: 0.875rem;
+  --font-size-subtitle-2: 0.75rem;
+  --font-size-body: 1rem;
+}
+
+.title-1 {
+  font-size: var(--font-size-title-1);
+}
+.title-2 {
+  font-size: var(--font-size-title-2);
+}
+.title-3 {
+  font-size: var(--font-size-title-3);
+}
+
+.text-14{
+    font-size: var(--font-size-subtitle-1) !important;
+}
+
+.text-12{
+    font-size: var(--font-size-subtitle-2) !important;
+}
+
+.text-primary {
+  color: var(--ion-color-primary) !important;
+}
+
+.i-24{
+    font-size: 24px;
+}
+/***   ionic css        ***/
+
+ion-button {
+  --box-shadow: none !important;
+  height: 48px;
+}
+ion-button.secondary {
+  --background: var(--ion-color-white);
+  --background-hover: #9ce0be;
+  --background-activated: #88f4be;
+  --background-focused: #88f4be;
+
+  --color: var(--ion-color-primary);
+
+  --border-color: var(--ion-color-primary);
+  --border-style: solid;
+  --border-width: 1px;
+
+  --box-shadow: 0 2px 6px 0 rgb(37, 6, 218, 0);
+
+  --ripple-color: var(--ion-color-primary);
+}
+
+ion-input.custom-input {
+  --background: var(--ion-color-light);
+  /*--color: var(--ion-color-primary);*/
+  /*--placeholder-color: #ddd;*/
+  --placeholder-opacity: 0.5;
+    height: 48px !important;
+  --padding-bottom: 10px !important;
+  --padding-end: 5px !important;
+  --padding-start: 10px !important;
+  --padding-top: 10px !important;
+}
+
+ion-input.custom-input:focus{
+    border-color: var(--ion-color-primary);
+}
+
+ion-input.custom.ios .input-bottom .helper-text,
+ion-input.custom.ios .input-bottom .counter,
+ion-input.custom.md .input-bottom .helper-text,
+ion-input.custom.md .input-bottom .counter {
+  color: var(--ion-color-primary);
+}
+
+.input-fill-outline.input-shape-round {
+    --border-color: var(--ion-color-light);
+    --border-radius: 15px !important;
+  }
+ion-input > ion-button > button{
+    background-color: black;
+}
+
+
+.bg-gray{
+  background-color: #f6f6f6;
+}
+
+.bg-primary-light{
+  background-color: rgba(37, 7, 219, 0.1);
+}
+
+.rect-icon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 114px;
+  height: 93px;
+  font-size: 32px;
+}
+
+.border-primary{
+  border-color: var(--ion-color-primary);
+}
