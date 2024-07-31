@@ -1,4 +1,4 @@
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route, useHistory } from "react-router-dom";
 import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 
@@ -34,29 +34,33 @@ import "./theme/variables.css";
 import LoadingPage from "./pages/loading/LoadingPage";
 import TabsPage from "./pages/tabs/TabsPage";
 import WelcomePage from "./pages/welcome/WelcomePage";
-import LoginPage from "./pages/login/LoginPage";
+import LoginPage from "./pages/auth/LoginPage";
+import { useAuth } from "./hooks";
+import { useEffect } from "react";
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/">
-          <LoadingPage />
-        </Route>
-        <Route exact path="/welcome">
-          <WelcomePage />
-        </Route>
-        <Route exact path="/login">
-          <LoginPage />
-        </Route>
-        <Route path="/tabs">
-          <TabsPage />
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
-);
+const App: React.FC = () => {
+  return (
+    <IonApp>
+      <IonReactRouter>
+        <IonRouterOutlet>
+          <Route exact path="/">
+            <LoadingPage />
+          </Route>
+          <Route exact path="/welcome">
+            <WelcomePage />
+          </Route>
+          <Route exact path="/login">
+            <LoginPage />
+          </Route>
+          <Route path="/tabs">
+            <TabsPage />
+          </Route>
+        </IonRouterOutlet>
+      </IonReactRouter>
+    </IonApp>
+  );
+};
 
 export default App;

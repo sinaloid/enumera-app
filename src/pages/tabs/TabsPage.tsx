@@ -7,7 +7,7 @@ import {
   IonLabel,
 } from "@ionic/react";
 import { triangle, ellipse, square, home, person } from "ionicons/icons";
-import { Route, Redirect } from "react-router";
+import { Route, Redirect, useHistory } from "react-router";
 import Tab1 from "../Tab1";
 import Tab2 from "../Tab2";
 import Tab3 from "../Tab3";
@@ -16,8 +16,17 @@ import HomeSvg from "../../components/svg/HomeSvg";
 import ChallengeSvg from "../../components/svg/ChallengeSvg";
 import CompteSvg from "../../components/svg/CompteSvg";
 import Home from "../home/Home";
+import { useAuth } from "../../hooks";
+import { useEffect } from "react";
 
 const TabsPage: React.FC = () => {
+  const {user, isAuth} = useAuth()
+  const history = useHistory()
+  useEffect(() => {
+    if(!isAuth()){
+      history?.push("/login")
+    }
+  },[user])
   return (
     <IonTabs>
       <IonRouterOutlet>

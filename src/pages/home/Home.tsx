@@ -20,8 +20,10 @@ import { useState } from "react";
 import BookSvg from "../../components/svg/BookSvg";
 import ExerciceSvg from "../../components/svg/ExerciceSvg";
 import { Container } from "../../components";
+import { useAuth } from "../../hooks";
 
 const Home: React.FC = () => {
+  const {user} = useAuth()
   const [section, setSection] = useState(0);
   const matieres = [
     {
@@ -97,7 +99,7 @@ const Home: React.FC = () => {
                 />
                 <div className="ms-2 line-height">
                   <div className="fw-bold text-uppercase text-14 line-height">
-                    Traore Ali
+                    {user?.nom + " " + user?.prenom}
                   </div>
                   <div className="text-12 text-muted">12/05/2024</div>
                 </div>
