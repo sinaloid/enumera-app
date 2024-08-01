@@ -9,7 +9,7 @@ const useRequest = () => {
       "Content-Type": "multipart/form-data",
     },
   };
-  const get = (endPoint: any, setData: any,setLoaded:any) => {
+  const get = (endPoint: any, setData: any,setLoaded:any = ()=>{}) => {
     request
       .get(endPoint,headers)
       .then((res: any) => {

@@ -21,7 +21,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { notifications, chevronDown, chevronForward } from "ionicons/icons";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Container } from "../../components";
 import BookSvg from "../../components/svg/BookSvg";
 import ClasseSvg from "../../components/svg/ClasseSvg";
@@ -30,94 +30,34 @@ import LessonSvg from "../../components/svg/LessonSvg";
 import SuccessSvg from "../../components/svg/SuccessSvg";
 import { useAuth, useDataProvider, useNavigate, useRequest } from "../../hooks";
 import { endPoint } from "../../services";
-import { Classe, Periode } from "./components";
-import useRequestMatiere from "./hooks/useRequest";
-import useFunction from "../../hooks/useFunction";
+import { useParams } from "react-router";
 
-const Matiere = () => {
+const Chapitre = () => {
   const { user } = useAuth();
   const [section, setSection] = useState(0);
   const [datas, setDatas] = useState<any>([]);
   const [periodes, setPeriodes] = useState<any>([]);
   const [classes, setClasses] = useState<any>([]);
   const { get } = useRequest();
-  const { getPeriodeClasse } = useRequestMatiere();
   const { navigate } = useNavigate();
   const modalPeriode = useRef<HTMLIonModalElement>(null);
   const modalClasse = useRef<HTMLIonModalElement>(null);
   const { dataShared }: any = useDataProvider();
+  const { classeSlug, matiereSlug, periodeSlug }: any = useParams();
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    getPeriodeClasse(setPeriodes, setClasses);
-    get(endPoint.matieres, setDatas, setLoaded);
+    get(
+      endPoint.chapitres + `/${matiereSlug}/${classeSlug}/${periodeSlug}`,
+      setDatas,
+      setLoaded
+    );
   }, [user]);
-  const matieres = [
-    {
-      intitule: "FR",
-      nom: "Français",
-    },
-    {
-      intitule: "Math",
-      nom: "Mathématiques",
-    },
-    {
-      intitule: "PC",
-      nom: "Physique chime",
-    },
-    {
-      intitule: "ALL",
-      nom: "Allemand",
-    },
-    {
-      intitule: "EPS",
-      nom: "Education physique et sportive",
-    },
-    {
-      intitule: "Biblio",
-      nom: "Bibliothèque",
-    },
-  ];
-  const chapitres = [
-    {
-      intitule: <BookSvg />,
-      nom: "Chapitre 1 : L'histoire du Burkina",
-    },
-    {
-      intitule: <BookSvg />,
-      nom: "Chapitre 1 : L'histoire du Burkina",
-    },
-    {
-      intitule: <BookSvg />,
-      nom: "Chapitre 1 : L'histoire du Burkina",
-    },
-    {
-      intitule: <BookSvg />,
-      nom: "Chapitre 1 : L'histoire du Burkina",
-    },
-    {
-      intitule: <BookSvg />,
-      nom: "Chapitre 1 : L'histoire du Burkina",
-    },
-    {
-      intitule: <BookSvg />,
-      nom: "Chapitre 1 : L'histoire du Burkina",
-    },
-  ];
-  const list: any = {
-    0: matieres,
-    1: chapitres,
-  };
+
   const changeSection = (e: any, name: any) => {
     e.preventDefault();
     setSection(name);
   };
-
-  const customActionSheetOptions = {
-    header: "Periodes",
-    subHeader: "Sélectionnez une période",
-  };
-
   return (
     <IonPage>
       <IonHeader>
@@ -211,14 +151,10 @@ const Matiere = () => {
                   </span>
                   <IonIcon icon={chevronForward} />
                   <span onClick={(e) => changeSection(e, section - 1)}>
-                    Matières
+                    {dataShared?.matiere?.label}
                   </span>
-                  {section === 1 && (
-                    <>
-                      <IonIcon icon={chevronForward} />
-                      <span>Chapitres</span>
-                    </>
-                  )}
+                  <IonIcon icon={chevronForward} />
+                  <span>Chapitres</span>
                 </div>
               </div>
               <div className="col-12 text-center mt-2 mb-3">
@@ -226,55 +162,12 @@ const Matiere = () => {
               </div>
               {loaded &&
                 datas?.map((data: any) => {
-                  return <MatiereItem data={data} key={data.slug} />;
+                  return <ChapitreItem data={data} />;
                 })}
               {!loaded && <Skeleton />}
             </div>
           </div>
         </Container>
-
-        <IonModal
-          ref={modalClasse}
-          initialBreakpoint={0.25}
-          breakpoints={[0, 0.25, 0.5, 0.75]}
-        >
-          <IonContent>
-            <Container>
-              <div className="my-2 text-center">Sélectionnez une classe</div>
-              {classes.map((data: any) => {
-                return (
-                  <Classe
-                    key={data.slug}
-                    data={data}
-                    isActive={dataShared?.classe?.slug === data.slug}
-                    modal={modalClasse}
-                  />
-                );
-              })}
-            </Container>
-          </IonContent>
-        </IonModal>
-        <IonModal
-          ref={modalPeriode}
-          initialBreakpoint={0.25}
-          breakpoints={[0, 0.25, 0.5, 0.75]}
-        >
-          <IonContent>
-            <Container>
-              <div className="my-2 text-center">Sélectionnez une periode</div>
-              {periodes.map((data: any) => {
-                return (
-                  <Periode
-                    key={data.slug}
-                    data={data}
-                    isActive={dataShared?.periode?.slug === data.slug}
-                    modal={modalPeriode}
-                  />
-                );
-              })}
-            </Container>
-          </IonContent>
-        </IonModal>
       </IonContent>
     </IonPage>
   );
@@ -320,29 +213,27 @@ const Skeleton = () => {
   );
 };
 
-interface MatiereProps {
+interface ChapitreProps {
   data: any;
 }
-const MatiereItem: React.FC<MatiereProps> = ({ data }) => {
+const ChapitreItem: React.FC<ChapitreProps> = ({ data }) => {
   const { navigate } = useNavigate();
   const { dataShared }: any = useDataProvider();
-  const {updateDataShared} = useFunction()
 
   return (
     <div
       className="col-12 px-0 bg-primary-light mb-3"
       onClick={(e) =>
-      {
-        updateDataShared("matiere",data)
-        navigate(e, `classes/${dataShared?.classe?.slug}/periodes/${dataShared?.periode?.slug}/matieres/${data?.slug}/chapitres`
+        navigate(
+          e,
+          `classes/${dataShared?.classe?.slug}/periodes/${dataShared?.periode?.slug}/matieres/${data?.slug}/chapitres`
         )
-      }
       }
     >
       <div className="d-flex">
         <div className="bg-primary rect-icon">
           <span className="text-white fw-bold text-uppercase">
-            {data.abreviation}
+            <BookSvg />
           </span>
         </div>
         <div className="w-100 text-primary position-relative">
@@ -353,7 +244,7 @@ const MatiereItem: React.FC<MatiereProps> = ({ data }) => {
           <div className="d-flex px-2 position-absolute bottom-0">
             <div className="border-start border-end text-center px-2 border-primary">
               <LessonSvg /> <br />
-              <span>0 Chapitres</span>
+              <span>0 Leçons</span>
             </div>
           </div>
         </div>
@@ -362,4 +253,4 @@ const MatiereItem: React.FC<MatiereProps> = ({ data }) => {
   );
 };
 
-export default Matiere;
+export default Chapitre;

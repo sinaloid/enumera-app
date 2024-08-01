@@ -3,6 +3,7 @@ const endPoint = {
     periodes:"periodes",
     classes:"classes",
     matieres:"matieres",
+    chapitres:"chapitres",
 
 
 
