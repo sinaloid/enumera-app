@@ -1,5 +1,11 @@
 const endPoint = {
     login:"login",
+    periodes:"periodes",
+    matieres:"matieres",
+
+
+
+
     register:"register",
     getOtp:"get-otp",
     verifyOtp:"verify-otp",

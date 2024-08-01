@@ -54,6 +54,7 @@ const LoginPage: React.FC = () => {
       password: "12345678",
     },
     onSubmit: (values) => {
+      handleLogout()
       present({
         message: "Connexion...",
       });

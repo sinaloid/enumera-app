@@ -1,29 +1,25 @@
 import {
   IonButton,
   IonButtons,
-  IonCol,
   IonContent,
-  IonGrid,
   IonHeader,
   IonIcon,
   IonPage,
-  IonRow,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { chevronDown, chevronForward, notifications } from "ionicons/icons";
-import "./Home.css";
-import ClasseSvg from "../../components/svg/ClasseSvg";
-import SuccessSvg from "../../components/svg/SuccessSvg";
-import LessonSvg from "../../components/svg/LessonSvg";
+import { notifications, chevronDown, chevronForward } from "ionicons/icons";
 import { useEffect, useState } from "react";
-import BookSvg from "../../components/svg/BookSvg";
-import ExerciceSvg from "../../components/svg/ExerciceSvg";
 import { Container } from "../../components";
+import BookSvg from "../../components/svg/BookSvg";
+import ClasseSvg from "../../components/svg/ClasseSvg";
+import ExerciceSvg from "../../components/svg/ExerciceSvg";
+import LessonSvg from "../../components/svg/LessonSvg";
+import SuccessSvg from "../../components/svg/SuccessSvg";
 import { useAuth, useNavigate, useRequest } from "../../hooks";
 import { endPoint } from "../../services";
 
-const Home: React.FC = () => {
+const Matiere = () => {
   const { user } = useAuth();
   const [section, setSection] = useState(0);
   const [datas, setDatas] = useState<any>([]);
@@ -31,10 +27,64 @@ const Home: React.FC = () => {
   const {navigate} = useNavigate()
 
   useEffect(() => {
-    get(endPoint.periodes, setDatas);
+    get(endPoint.matieres, setDatas);
   }, [user]);
-  
-  
+  const matieres = [
+    {
+      intitule: "FR",
+      nom: "Français",
+    },
+    {
+      intitule: "Math",
+      nom: "Mathématiques",
+    },
+    {
+      intitule: "PC",
+      nom: "Physique chime",
+    },
+    {
+      intitule: "ALL",
+      nom: "Allemand",
+    },
+    {
+      intitule: "EPS",
+      nom: "Education physique et sportive",
+    },
+    {
+      intitule: "Biblio",
+      nom: "Bibliothèque",
+    },
+  ];
+  const chapitres = [
+    {
+      intitule: <BookSvg />,
+      nom: "Chapitre 1 : L'histoire du Burkina",
+    },
+    {
+      intitule: <BookSvg />,
+      nom: "Chapitre 1 : L'histoire du Burkina",
+    },
+    {
+      intitule: <BookSvg />,
+      nom: "Chapitre 1 : L'histoire du Burkina",
+    },
+    {
+      intitule: <BookSvg />,
+      nom: "Chapitre 1 : L'histoire du Burkina",
+    },
+    {
+      intitule: <BookSvg />,
+      nom: "Chapitre 1 : L'histoire du Burkina",
+    },
+    {
+      intitule: <BookSvg />,
+      nom: "Chapitre 1 : L'histoire du Burkina",
+    },
+  ];
+  const list: any = {
+    0: matieres,
+    1: chapitres,
+  };
   const changeSection = (e: any, name: any) => {
     e.preventDefault();
     setSection(name);
@@ -116,7 +166,7 @@ const Home: React.FC = () => {
                 </div>
               </div>
               <div className="col-12 text-center mt-2 mb-3">
-                Liste des périodes
+                Liste des matières
                 
               </div>
               {
@@ -130,7 +180,7 @@ const Home: React.FC = () => {
                       <div className="d-flex">
                         <div className="bg-primary rect-icon">
                           <span className="text-white fw-bold">
-                            Periode
+                            {data.abreviation}
                           </span>
                         </div>
                         <div className="w-100 text-primary position-relative">
@@ -158,4 +208,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Matiere;

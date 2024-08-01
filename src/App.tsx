@@ -37,6 +37,7 @@ import WelcomePage from "./pages/welcome/WelcomePage";
 import LoginPage from "./pages/auth/LoginPage";
 import { useAuth } from "./hooks";
 import { useEffect } from "react";
+import { Matiere } from "./pages";
 
 setupIonicReact();
 
@@ -53,6 +54,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/login">
             <LoginPage />
+          </Route>
+          <Route exact path="/periodes/:periodeSlug/matieres">
+            <Matiere />
           </Route>
           <Route path="/tabs">
             <TabsPage />

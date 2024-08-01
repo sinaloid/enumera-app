@@ -43,7 +43,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const isAuth = () => {
-    return user?.token !== undefined && user?.token !== null && user?.token !== "";
+    let savedUser : any = localStorage.getItem("user");
+    savedUser = JSON.parse(savedUser)
+    //setUser(savedUser)
+    return savedUser?.token !== undefined && savedUser?.token !== null && savedUser?.token !== "";
   };
 
   return (

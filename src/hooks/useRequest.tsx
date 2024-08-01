@@ -1,11 +1,20 @@
 import { request } from "../services";
+import { useAuth } from "./useAuth";
 
 const useRequest = () => {
+  const { user } = useAuth();
+  const headers = {
+    headers: {
+      'Authorization' : `Bearer ${user?.token}`,
+      "Content-Type": "multipart/form-data",
+    },
+  };
   const get = (endPoint: any, setData: any) => {
     request
-      .post(endPoint)
+      .get(endPoint,headers)
       .then((res: any) => {
         console.log(res.data);
+        setData(res.data.data);
       })
       .catch((error) => {
         console.log(error);
