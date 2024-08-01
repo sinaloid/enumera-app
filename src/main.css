@@ -86,13 +86,15 @@ ion-input > ion-button > button{
     background-color: black;
 }
 
-
 .bg-gray{
   background-color: #f6f6f6;
 }
 
 .bg-primary-light{
-  background-color: rgba(37, 7, 219, 0.1);
+  background-color: rgba(37, 7, 219, 0.1) !important;
+}
+.bg-gray{
+  background-color: #f2f2f2!important;
 }
 
 .rect-icon{
@@ -107,3 +109,4 @@ ion-input > ion-button > button{
 .border-primary{
   border-color: var(--ion-color-primary);
 }
+

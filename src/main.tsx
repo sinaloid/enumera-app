@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./main.css";
 import { AppContextProvider } from "./context/context";
 import { AuthProvider } from "./hooks";
+import { DataProvider } from "./context";
 
 const container = document.getElementById("root");
 const root = createRoot(container!);
@@ -12,7 +13,9 @@ root.render(
   <React.StrictMode>
     <AppContextProvider>
       <AuthProvider>
-        <App />
+        <DataProvider>
+          <App />
+        </DataProvider>
       </AuthProvider>
     </AppContextProvider>
   </React.StrictMode>

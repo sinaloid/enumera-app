@@ -9,12 +9,13 @@ const useRequest = () => {
       "Content-Type": "multipart/form-data",
     },
   };
-  const get = (endPoint: any, setData: any) => {
+  const get = (endPoint: any, setData: any,setLoaded:any) => {
     request
       .get(endPoint,headers)
       .then((res: any) => {
         console.log(res.data);
         setData(res.data.data);
+        setLoaded(true)
       })
       .catch((error) => {
         console.log(error);

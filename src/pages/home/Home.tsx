@@ -1,4 +1,6 @@
 import {
+  IonBreadcrumb,
+  IonBreadcrumbs,
   IonButton,
   IonButtons,
   IonCol,
@@ -28,13 +30,12 @@ const Home: React.FC = () => {
   const [section, setSection] = useState(0);
   const [datas, setDatas] = useState<any>([]);
   const { get } = useRequest();
-  const {navigate} = useNavigate()
+  const { navigate } = useNavigate();
 
   useEffect(() => {
     get(endPoint.periodes, setDatas);
   }, [user]);
-  
-  
+
   const changeSection = (e: any, name: any) => {
     e.preventDefault();
     setSection(name);
@@ -88,9 +89,12 @@ const Home: React.FC = () => {
               <div className="col-6 px-0 ps-1">
                 <div className="d-flex align-items-center text-primary p-1 bg-white">
                   <div className="me-auto">
-                    <SuccessSvg /> <span>Moyenne Tri.:12,75</span>
+                    <SuccessSvg />
                   </div>
-                  <IonIcon icon={chevronDown} />
+                  <div className="d-flex align-items-center ps-2">
+                    <span>Moyenne Tri.:12,75</span>
+                    <IonIcon icon={chevronDown} />
+                  </div>
                 </div>
               </div>
               <div className="col-12 mt-2 text-14 py-2 text-center bg-primary-light">
@@ -98,6 +102,7 @@ const Home: React.FC = () => {
               </div>
             </div>
           </div>
+
           <div className="container-fluid">
             <div className="row mt-2">
               <div className="col-12 px-0">
@@ -115,41 +120,39 @@ const Home: React.FC = () => {
                   )}
                 </div>
               </div>
+
               <div className="col-12 text-center mt-2 mb-3">
                 Liste des périodes
-                
               </div>
-              {
-                datas?.map((data: any, idx: number) => {
-                  return (
-                    <div
-                      className="col-12 px-0 bg-primary-light mb-3"
-                      key={idx}
-                      onClick={(e) => navigate(e,"periodes/"+data.slug+"/matieres")}
-                    >
-                      <div className="d-flex">
-                        <div className="bg-primary rect-icon">
-                          <span className="text-white fw-bold">
-                            Periode
-                          </span>
+              {datas?.map((data: any, idx: number) => {
+                return (
+                  <div
+                    className="col-12 px-0 bg-primary-light mb-3"
+                    key={idx}
+                    onClick={(e) =>
+                      navigate(e, "periodes/" + data.slug + "/matieres")
+                    }
+                  >
+                    <div className="d-flex">
+                      <div className="bg-primary rect-icon">
+                        <span className="text-white fw-bold">Periode</span>
+                      </div>
+                      <div className="w-100 text-primary position-relative">
+                        <div className="d-flex align-items-center px-2">
+                          <span className="fw-bold me-auto">{data.label}</span>
+                          <IonIcon icon={chevronForward} />
                         </div>
-                        <div className="w-100 text-primary position-relative">
-                          <div className="d-flex align-items-center px-2">
-                            <span className="fw-bold me-auto">{data.label}</span>
-                            <IonIcon icon={chevronForward} />
-                          </div>
-                          <div className="d-flex px-2 position-absolute bottom-0">
-                            <div className="border-start border-end text-center px-2 border-primary">
-                              <LessonSvg /> <br />
-                              <span> Chapitres</span>
-                            </div>
+                        <div className="d-flex px-2 position-absolute bottom-0">
+                          <div className="border-start border-end text-center px-2 border-primary">
+                            <LessonSvg /> <br />
+                            <span> Chapitres</span>
                           </div>
                         </div>
                       </div>
                     </div>
-                  );
-                })
-              }
+                  </div>
+                );
+              })}
             </div>
           </div>
         </Container>

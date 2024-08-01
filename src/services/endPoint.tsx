@@ -1,6 +1,7 @@
 const endPoint = {
     login:"login",
     periodes:"periodes",
+    classes:"classes",
     matieres:"matieres",
 
 

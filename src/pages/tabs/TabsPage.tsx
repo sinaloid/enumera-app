@@ -18,6 +18,7 @@ import CompteSvg from "../../components/svg/CompteSvg";
 import Home from "../home/Home";
 import { useAuth } from "../../hooks";
 import { useEffect } from "react";
+import { Matiere } from "../matiere";
 
 const TabsPage: React.FC = () => {
   const {user, isAuth} = useAuth()
@@ -31,7 +32,7 @@ const TabsPage: React.FC = () => {
     <IonTabs>
       <IonRouterOutlet>
         <Route exact path="/tabs/home">
-          <Home />
+          <Matiere />
         </Route>
         <Route exact path="/tabs/lesson">
           <Tab2 />
