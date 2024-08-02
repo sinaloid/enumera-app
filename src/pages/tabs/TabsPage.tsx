@@ -58,7 +58,7 @@ const TabsPage: React.FC = () => {
         </IonTabButton>
         <IonTabButton tab="challenge" href="/tabs/challenge">
           <ChallengeSvg />
-          <IonLabel>Challenge</IonLabel>
+          <IonLabel>Evaluation</IonLabel>
         </IonTabButton>
         <IonTabButton tab="compte" href="/tabs/compte">
           <CompteSvg />

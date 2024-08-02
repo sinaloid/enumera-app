@@ -1,2 +1,5 @@
 export {default as ClasseSvg } from './ClasseSvg'
 export {default as BookSvg} from './BookSvg'
+export {default as LessonSvg} from './LessonSvg'
+export {default as SuccessSvg} from './SuccessSvg'
+export {default as ExerciceSvg} from './ExerciceSvg'

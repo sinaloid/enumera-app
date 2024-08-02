@@ -4,6 +4,8 @@ const endPoint = {
     classes:"classes",
     matieres:"matieres",
     chapitres:"chapitres",
+    lecons:"lecons",
+    cours:"cours",
 
 
 

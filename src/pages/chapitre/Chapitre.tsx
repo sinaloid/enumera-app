@@ -22,15 +22,11 @@ import {
 } from "@ionic/react";
 import { notifications, chevronDown, chevronForward } from "ionicons/icons";
 import { useEffect, useRef, useState } from "react";
-import { Container } from "../../components";
-import BookSvg from "../../components/svg/BookSvg";
-import ClasseSvg from "../../components/svg/ClasseSvg";
-import ExerciceSvg from "../../components/svg/ExerciceSvg";
-import LessonSvg from "../../components/svg/LessonSvg";
-import SuccessSvg from "../../components/svg/SuccessSvg";
+import { ClasseSvg,BookSvg,SuccessSvg,LessonSvg, Container, LinkList } from "../../components";
 import { useAuth, useDataProvider, useNavigate, useRequest } from "../../hooks";
 import { endPoint } from "../../services";
 import { useParams } from "react-router";
+import useFunction from "../../hooks/useFunction";
 
 const Chapitre = () => {
   const { user } = useAuth();
@@ -145,24 +141,14 @@ const Chapitre = () => {
           <div className="container-fluid">
             <div className="row mt-2">
               <div className="col-12 px-0">
-                <div className="d-flex align-items-center text-12 ">
-                  <span className="text-primary me-1">
-                    {dataShared?.periode?.label}
-                  </span>
-                  <IonIcon icon={chevronForward} />
-                  <span onClick={(e) => changeSection(e, section - 1)}>
-                    {dataShared?.matiere?.label}
-                  </span>
-                  <IonIcon icon={chevronForward} />
-                  <span>Chapitres</span>
-                </div>
+                <LinkList />
               </div>
               <div className="col-12 text-center mt-2 mb-3">
-                Liste des matières
+                Liste des chapitres
               </div>
               {loaded &&
                 datas?.map((data: any) => {
-                  return <ChapitreItem data={data} />;
+                  return <Item data={data} />;
                 })}
               {!loaded && <Skeleton />}
             </div>
@@ -213,22 +199,24 @@ const Skeleton = () => {
   );
 };
 
-interface ChapitreProps {
+interface ItemProps {
   data: any;
 }
-const ChapitreItem: React.FC<ChapitreProps> = ({ data }) => {
+const Item: React.FC<ItemProps> = ({ data }) => {
   const { navigate } = useNavigate();
-  const { dataShared }: any = useDataProvider();
+  const { classeSlug, matiereSlug, periodeSlug }: any = useParams();
+  const { updateDataShared } = useFunction();
 
   return (
     <div
       className="col-12 px-0 bg-primary-light mb-3"
-      onClick={(e) =>
+      onClick={(e) => {
         navigate(
           e,
-          `classes/${dataShared?.classe?.slug}/periodes/${dataShared?.periode?.slug}/matieres/${data?.slug}/chapitres`
-        )
-      }
+          `classes/${classeSlug}/periodes/${periodeSlug}/matieres/${matiereSlug}/chapitres/${data.slug}/lecons`
+        );
+        updateDataShared("chapitre", data);
+      }}
     >
       <div className="d-flex">
         <div className="bg-primary rect-icon">

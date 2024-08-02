@@ -1,4 +1,4 @@
-const LessonSvg: React.FC = () => {
+const LessonSvg = () => {
   return (
     <svg
       width="32"
