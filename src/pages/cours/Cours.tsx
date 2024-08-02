@@ -170,7 +170,7 @@ const Lecon = () => {
               <div className="col-12 text-center mt-2 mb-3">
                 Cours
               </div>
-              {loaded && <><div dangerouslySetInnerHTML={{__html:datas.description}} /></>}
+              {loaded && <><div dangerouslySetInnerHTML={{__html:datas?.description}} /></>}
               {!loaded && <Skeleton />}
             </div>
           </div>

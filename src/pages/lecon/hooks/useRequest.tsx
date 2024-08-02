@@ -17,7 +17,10 @@ const useRequestLecon = () => {
       .get(endPoint, headers)
       .then((res: any) => {
         //console.log(res.data.data)
-        setDatas([res.data.data.cours]);
+        if(res.data.data.cours){
+          setDatas([res.data.data.cours]);
+        }
+        
         setLoaded(true)
         /*setDataShared({
           ...dataShared,

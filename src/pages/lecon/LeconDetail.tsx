@@ -222,7 +222,7 @@ const Item: React.FC<ItemProps> = ({ data }) => {
         </div>
         <div className="w-100 text-primary position-relative">
           <div className="d-flex align-items-center px-2">
-            <span className="fw-bold me-auto">{data.label}</span>
+            <span className="fw-bold me-auto">{data?.label}</span>
             <IonIcon icon={chevronForward} />
           </div>
           <div className="d-flex px-2 position-absolute bottom-0">
