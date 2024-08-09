@@ -16,9 +16,12 @@ const useRequestLecon = () => {
     await request
       .get(endPoint, headers)
       .then((res: any) => {
-        //console.log(res.data.data)
+        console.log(res.data.data)
         if(res.data.data.cours){
-          setDatas([res.data.data.cours]);
+          setDatas({
+            cours:[res.data.data.cours],
+            evaluations:res.data.data.evaluations_lecons
+          });
         }
         
         setLoaded(true)

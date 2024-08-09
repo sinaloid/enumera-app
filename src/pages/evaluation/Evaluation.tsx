@@ -27,31 +27,40 @@ import {
   BookSvg,
   SuccessSvg,
   LessonSvg,
-  ExerciceSvg,
   Container,
   LinkList,
 } from "../../components";
-import { useAuth, useDataProvider, useNavigate } from "../../hooks";
+import { useAuth, useDataProvider, useNavigate, useRequest } from "../../hooks";
 import { endPoint } from "../../services";
 import { useParams } from "react-router";
-import useRequestLecon from "./hooks/useRequest";
 import useFunction from "../../hooks/useFunction";
 
-const Cours = () => {
+const Evaluation = () => {
   const { user } = useAuth();
   const [section, setSection] = useState(0);
   const [datas, setDatas] = useState<any>([]);
-  const { get } = useRequestLecon();
+  const [periodes, setPeriodes] = useState<any>([]);
+  const [classes, setClasses] = useState<any>([]);
+  const { get } = useRequest();
   const { navigate } = useNavigate();
   const modalPeriode = useRef<HTMLIonModalElement>(null);
   const modalClasse = useRef<HTMLIonModalElement>(null);
   const { dataShared }: any = useDataProvider();
-  const { classeSlug, matiereSlug, periodeSlug, leconSlug }: any = useParams();
+  const { classeSlug, matiereSlug, periodeSlug }: any = useParams();
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    get(endPoint.lecons + `/${leconSlug}`, setDatas, setLoaded);
+    get(
+      endPoint.chapitres + `/${matiereSlug}/${classeSlug}/${periodeSlug}`,
+      setDatas,
+      setLoaded
+    );
   }, [user]);
+
+  const changeSection = (e: any, name: any) => {
+    e.preventDefault();
+    setSection(name);
+  };
   return (
     <IonPage>
       <IonHeader>
@@ -142,18 +151,12 @@ const Cours = () => {
                 <LinkList />
               </div>
               <div className="col-12 text-center mt-2 mb-3">
-                Cours et exercices
+                Liste des chapitres
               </div>
-              {loaded && (
-                <>
-                  {datas?.cours?.map((data: any) => {
-                    return <Item data={data} />;
-                  })}
-                  {datas?.evaluations?.map((data: any) => {
-                    return <Item data={data} />;
-                  })}
-                </>
-              )}
+              {loaded &&
+                datas?.map((data: any) => {
+                  return <Item data={data} />;
+                })}
               {!loaded && <Skeleton />}
             </div>
           </div>
@@ -208,18 +211,18 @@ interface ItemProps {
 }
 const Item: React.FC<ItemProps> = ({ data }) => {
   const { navigate } = useNavigate();
-  const { classeSlug, matiereSlug, periodeSlug, chapitreSlug, leconSlug }: any =
-    useParams();
+  const { classeSlug, matiereSlug, periodeSlug }: any = useParams();
   const { updateDataShared } = useFunction();
+
   return (
     <div
       className="col-12 px-0 bg-primary-light mb-3"
       onClick={(e) => {
         navigate(
           e,
-          `classes/${classeSlug}/periodes/${periodeSlug}/matieres/${matiereSlug}/chapitres/${chapitreSlug}/lecons/${leconSlug}/cours/${data.slug}`
+          `classes/${classeSlug}/periodes/${periodeSlug}/matieres/${matiereSlug}/chapitres/${data.slug}/lecons`
         );
-        updateDataShared("cours", data);
+        updateDataShared("chapitre", data);
       }}
     >
       <div className="d-flex">
@@ -230,13 +233,13 @@ const Item: React.FC<ItemProps> = ({ data }) => {
         </div>
         <div className="w-100 text-primary position-relative">
           <div className="d-flex align-items-center px-2">
-            <span className="fw-bold me-auto">{data?.label}</span>
+            <span className="fw-bold me-auto">{data.label}</span>
             <IonIcon icon={chevronForward} />
           </div>
           <div className="d-flex px-2 position-absolute bottom-0">
-            <div className="border-start  text-center px-2 border-primary">
+            <div className="border-start border-end text-center px-2 border-primary">
               <LessonSvg /> <br />
-              <span>0 Cours</span>
+              <span>0 Leçons</span>
             </div>
           </div>
         </div>
@@ -245,4 +248,4 @@ const Item: React.FC<ItemProps> = ({ data }) => {
   );
 };
 
-export default Cours;
+export default Evaluation;
