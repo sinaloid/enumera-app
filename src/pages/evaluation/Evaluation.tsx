@@ -27,14 +27,14 @@ import {
   BookSvg,
   SuccessSvg,
   LessonSvg,
+  ExerciceSvg,
   Container,
   LinkList,
 } from "../../components";
 import { useAuth, useDataProvider, useNavigate, useRequest } from "../../hooks";
 import { endPoint } from "../../services";
 import { useParams } from "react-router";
-import useFunction from "../../hooks/useFunction";
-
+import "./Evaluation.css";
 const Evaluation = () => {
   const { user } = useAuth();
   const [section, setSection] = useState(0);
@@ -46,20 +46,46 @@ const Evaluation = () => {
   const modalPeriode = useRef<HTMLIonModalElement>(null);
   const modalClasse = useRef<HTMLIonModalElement>(null);
   const { dataShared }: any = useDataProvider();
-  const { classeSlug, matiereSlug, periodeSlug }: any = useParams();
+  const {
+    classeSlug,
+    matiereSlug,
+    periodeSlug,
+    coursSlug,
+    evaluationSlug,
+  }: any = useParams();
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     get(
-      endPoint.chapitres + `/${matiereSlug}/${classeSlug}/${periodeSlug}`,
+      endPoint.evaluations_lecons + `/${evaluationSlug}`,
       setDatas,
       setLoaded
     );
   }, [user]);
 
-  const changeSection = (e: any, name: any) => {
-    e.preventDefault();
-    setSection(name);
+  useEffect(() => {
+    mediaConfig();
+  }, [datas]);
+
+  const mediaConfig = () => {
+    const videos = document.querySelectorAll("video");
+    videos.forEach((video) => {
+      video.controls = true;
+      video.setAttribute("class", "w-100");
+    });
+
+    const audios = document.querySelectorAll("audio");
+    audios.forEach((audio) => {
+      audio.controls = true;
+      audio.setAttribute("class", "w-100");
+    });
+
+    const images = document.querySelectorAll("image");
+    images.forEach((image) => {
+      image.setAttribute("class", "w-100");
+    });
+
+    console.log(videos);
   };
   return (
     <IonPage>
@@ -98,66 +124,60 @@ const Evaluation = () => {
       <IonContent>
         <Container>
           <div className="container-fluid">
-            <div className="row mt-2 text-14">
-              <div className="col-6 px-0 pe-1">
-                <div
-                  className="d-flex align-items-center text-primary p-1 bg-primary-light"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    modalClasse.current?.present();
-                  }}
-                >
-                  <div className="me-auto">
-                    <ClasseSvg /> <span>{dataShared?.classe?.label}</span>
-                  </div>
-                  <IonIcon icon={chevronDown} />
+            <div>
+              {loaded && (
+                <>
+                  <div className="fw-bold text-center fs-5">{datas?.label}</div>
+                </>
+              )}
+              {!loaded && <Skeleton />}
+            </div>
+            <div className="row mt-2">
+              <div className="d-flex align-items-center w-100">
+                <div className="me-auto">
+                  <div className="w-100 text-primary fw-bold">Questions</div>
+                  <div className="text-center fw-bold">1/20</div>
+                </div>
+                <div className="evalu-circle d-flex align-items-center justify-content-center">
+                  <span>1 pts</span>
                 </div>
               </div>
-              <div className="col-6 px-0 ps-1">
-                <div
-                  className="d-flex align-items-center text-primary p-1 bg-primary-light"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    modalPeriode.current?.present();
-                  }}
-                >
-                  <div className="me-auto">
-                    <ClasseSvg /> <span>{dataShared?.periode?.label}</span>
-                  </div>
-                  <IonIcon icon={chevronDown} />
+              <div className="progress-bar my-4 rounded-5 px-0">
+                <div className="w-50 progress-bar bg-primary text-center text-white fw-bold">
+                  50%
                 </div>
               </div>
-              <div className="col-12 px-0 mt-2 ">
-                <div className="d-flex align-items-center justify-content-center text-primary p-1 bg-gray">
-                  <div className="">
-                    <SuccessSvg />{" "}
-                    <span className="text-lowcase">
-                      Moyenne {dataShared.periode.label}:
-                      <span className="text-danger ps-2 fw-bold">
-                        En attente
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className="col-12 mt-2 text-14 py-2 text-center bg-gray">
-                Messages défilantes : Actualités et évènements
+            </div>
+            <div className="row bg-gray question rounded-3">
+              <div className="col-12 p-2 fw-bold">
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                Repudiandae adipisci voluptate ratione excepturi expedita
+                perspiciatis, pariatur doloribus aut totam at voluptates
+                molestiae soluta, doloremque officia. Fugit consequatur voluptas
+                dolorem tempore.
               </div>
             </div>
           </div>
-          <div className="container-fluid">
-            <div className="row mt-2">
-              <div className="col-12 px-0">
-                <LinkList />
-              </div>
-              <div className="col-12 text-center mt-2 mb-3">
-                Liste des chapitres
-              </div>
-              {loaded &&
-                datas?.map((data: any) => {
-                  return <Item data={data} />;
-                })}
-              {!loaded && <Skeleton />}
+          <div className="container-fluid mt-4">
+            <div className="row mt-2">{!loaded && <Skeleton />}</div>
+            <div className="row">
+              {[...Array(4).keys()].map((data, idx) => {
+                return (
+                  <div className="d-flex bg-gray mb-3 d-flex px-0" key={idx}>
+                    <div className="d-flex align-items-center justify-content-center text-white bg-primary rec-num-size">
+                      {idx + 1}
+                    </div>
+                    <div className="p-2">
+                      Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="d-flex justify-content-center">
+              <IonButton className="w-75" shape="round">
+                Valider
+              </IonButton>
             </div>
           </div>
         </Container>
@@ -203,48 +223,6 @@ const Skeleton = () => {
         );
       })}
     </>
-  );
-};
-
-interface ItemProps {
-  data: any;
-}
-const Item: React.FC<ItemProps> = ({ data }) => {
-  const { navigate } = useNavigate();
-  const { classeSlug, matiereSlug, periodeSlug }: any = useParams();
-  const { updateDataShared } = useFunction();
-
-  return (
-    <div
-      className="col-12 px-0 bg-primary-light mb-3"
-      onClick={(e) => {
-        navigate(
-          e,
-          `classes/${classeSlug}/periodes/${periodeSlug}/matieres/${matiereSlug}/chapitres/${data.slug}/lecons`
-        );
-        updateDataShared("chapitre", data);
-      }}
-    >
-      <div className="d-flex">
-        <div className="bg-primary rect-icon">
-          <span className="text-white fw-bold text-uppercase">
-            <BookSvg />
-          </span>
-        </div>
-        <div className="w-100 text-primary position-relative">
-          <div className="d-flex align-items-center px-2">
-            <span className="fw-bold me-auto">{data.label}</span>
-            <IonIcon icon={chevronForward} />
-          </div>
-          <div className="d-flex px-2 position-absolute bottom-0">
-            <div className="border-start border-end text-center px-2 border-primary">
-              <LessonSvg /> <br />
-              <span>0 Leçons</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   );
 };
 

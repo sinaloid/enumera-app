@@ -150,7 +150,7 @@ const Cours = () => {
                     return <Item data={data} />;
                   })}
                   {datas?.evaluations?.map((data: any) => {
-                    return <Item data={data} />;
+                    return <ItemEvaluation data={data} />;
                   })}
                 </>
               )}
@@ -226,6 +226,45 @@ const Item: React.FC<ItemProps> = ({ data }) => {
         <div className="bg-primary rect-icon">
           <span className="text-white fw-bold text-uppercase">
             <BookSvg />
+          </span>
+        </div>
+        <div className="w-100 text-primary position-relative">
+          <div className="d-flex align-items-center px-2">
+            <span className="fw-bold me-auto">{data?.label}</span>
+            <IonIcon icon={chevronForward} />
+          </div>
+          <div className="d-flex px-2 position-absolute bottom-0">
+            <div className="border-start  text-center px-2 border-primary">
+              <LessonSvg /> <br />
+              <span>0 Cours</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ItemEvaluation: React.FC<ItemProps> = ({ data }) => {
+  const { navigate } = useNavigate();
+  const { classeSlug, matiereSlug, periodeSlug, chapitreSlug, leconSlug }: any =
+    useParams();
+  const { updateDataShared } = useFunction();
+  return (
+    <div
+      className="col-12 px-0 bg-primary-light mb-3"
+      onClick={(e) => {
+        navigate(
+          e,
+          `classes/${classeSlug}/periodes/${periodeSlug}/matieres/${matiereSlug}/chapitres/${chapitreSlug}/lecons/${leconSlug}/evaluation/${data.slug}`
+        );
+        updateDataShared("cours", data);
+      }}
+    >
+      <div className="d-flex">
+        <div className="bg-primary rect-icon">
+          <span className="text-white fw-bold text-uppercase">
+            <ExerciceSvg />
           </span>
         </div>
         <div className="w-100 text-primary position-relative">

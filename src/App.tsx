@@ -38,6 +38,7 @@ import LoginPage from "./pages/auth/LoginPage";
 import { useAuth } from "./hooks";
 import { useEffect } from "react";
 import { Chapitre, Cours, Lecon, LeconDetail, Matiere } from "./pages";
+import { Evaluation } from "./pages/evaluation";
 
 setupIonicReact();
 
@@ -78,6 +79,12 @@ const App: React.FC = () => {
             path="/classes/:classeSlug/periodes/:periodeSlug/matieres/:matiereSlug/chapitres/:chapitreSlug/lecons/:leconSlug/cours/:coursSlug"
           >
             <Cours />
+          </Route>
+          <Route
+            exact
+            path="/classes/:classeSlug/periodes/:periodeSlug/matieres/:matiereSlug/chapitres/:chapitreSlug/lecons/:leconSlug/evaluation/:evaluationSlug"
+          >
+            <Evaluation />
           </Route>
           <Route path="/tabs">
             <TabsPage />

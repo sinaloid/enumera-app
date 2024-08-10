@@ -6,6 +6,7 @@ const endPoint = {
     chapitres:"chapitres",
     lecons:"lecons",
     cours:"cours",
+    evaluations_lecons:"evaluations-lecons",
 
 
 
