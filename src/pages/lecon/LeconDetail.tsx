@@ -31,7 +31,7 @@ import {
   Container,
   LinkList,
 } from "../../components";
-import { useAuth, useDataProvider, useNavigate } from "../../hooks";
+import { useAuth, useDataProvider, useNavigate, useRequest } from "../../hooks";
 import { endPoint } from "../../services";
 import { useParams } from "react-router";
 import useRequestLecon from "./hooks/useRequest";
@@ -41,16 +41,21 @@ const Cours = () => {
   const { user } = useAuth();
   const [section, setSection] = useState(0);
   const [datas, setDatas] = useState<any>([]);
-  const { get } = useRequestLecon();
+  const { getLecon, get } = useRequestLecon();
   const { navigate } = useNavigate();
   const modalPeriode = useRef<HTMLIonModalElement>(null);
   const modalClasse = useRef<HTMLIonModalElement>(null);
   const { dataShared }: any = useDataProvider();
-  const { classeSlug, matiereSlug, periodeSlug, leconSlug }: any = useParams();
+  const { classeSlug, matiereSlug, chapitreSlug, periodeSlug, leconSlug }: any =
+    useParams();
   const [loaded, setLoaded] = useState(false);
+  const [matiere, setMatiere] = useState<any>("");
+  const [chapitre, setChapitre] = useState<any>("");
 
   useEffect(() => {
-    get(endPoint.lecons + `/${leconSlug}`, setDatas, setLoaded);
+    getLecon(endPoint.lecons + `/${leconSlug}`, setDatas, setLoaded);
+    get(endPoint.chapitres + `/${chapitreSlug}`, setChapitre, setLoaded);
+    get(endPoint.matieres + `/${matiereSlug}`, setMatiere, setLoaded);
   }, [user]);
   return (
     <IonPage>
@@ -90,46 +95,12 @@ const Cours = () => {
         <Container>
           <div className="container-fluid">
             <div className="row mt-2 text-14">
-              <div className="col-6 px-0 pe-1">
-                <div
-                  className="d-flex align-items-center text-primary p-1 bg-primary-light"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    modalClasse.current?.present();
-                  }}
-                >
-                  <div className="me-auto">
-                    <ClasseSvg /> <span>{dataShared?.classe?.label}</span>
-                  </div>
-                  <IonIcon icon={chevronDown} />
+              <div className="text-center fs-5">
+                <div className="icon-circle bg-primary mx-auto d-flex align-items-center justify-content-center text-white">
+                  {matiere?.abreviation}
                 </div>
-              </div>
-              <div className="col-6 px-0 ps-1">
-                <div
-                  className="d-flex align-items-center text-primary p-1 bg-primary-light"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    modalPeriode.current?.present();
-                  }}
-                >
-                  <div className="me-auto">
-                    <ClasseSvg /> <span>{dataShared?.periode?.label}</span>
-                  </div>
-                  <IonIcon icon={chevronDown} />
-                </div>
-              </div>
-              <div className="col-12 px-0 mt-2 ">
-                <div className="d-flex align-items-center justify-content-center text-primary p-1 bg-gray">
-                  <div className="">
-                    <SuccessSvg />{" "}
-                    <span className="text-lowcase">
-                      Moyenne {dataShared.periode.label}:
-                      <span className="text-danger ps-2 fw-bold">
-                        En attente
-                      </span>
-                    </span>
-                  </div>
-                </div>
+                <div className="my-2 text-14 text-muted">{chapitre?.label}</div>
+                <div className="my-2 fw-bold">{datas?.lecon?.label}</div>
               </div>
               <div className="col-12 mt-2 text-14 py-2 text-center bg-gray">
                 Messages défilantes : Actualités et évènements
@@ -138,9 +109,11 @@ const Cours = () => {
           </div>
           <div className="container-fluid">
             <div className="row mt-2">
-              <div className="col-12 px-0">
+              {/**
+               * <div className="col-12 px-0">
                 <LinkList />
               </div>
+               */}
               <div className="col-12 text-center mt-2 mb-3">
                 Cours et exercices
               </div>
@@ -230,11 +203,13 @@ const Item: React.FC<ItemProps> = ({ data }) => {
         </div>
         <div className="w-100 text-primary position-relative">
           <div className="d-flex align-items-center px-2">
-            <span className="fw-bold me-auto">{data?.label}</span>
+            <span className="fw-bold me-auto text-lowercase">
+              Cours : {data?.label?.split(":")[1]}
+            </span>
             <IonIcon icon={chevronForward} />
           </div>
-          <div className="d-flex px-2 position-absolute bottom-0">
-            <div className="border-start  text-center px-2 border-primary">
+          <div className="d-flex px-2 mt-2">
+            <div className="border-start border-end text-center px-2 border-primary">
               <LessonSvg /> <br />
               <span>0 Cours</span>
             </div>
@@ -269,11 +244,13 @@ const ItemEvaluation: React.FC<ItemProps> = ({ data }) => {
         </div>
         <div className="w-100 text-primary position-relative">
           <div className="d-flex align-items-center px-2">
-            <span className="fw-bold me-auto">{data?.label}</span>
+            <span className="fw-bold me-auto text-lowercase">
+              {data?.label}
+            </span>
             <IonIcon icon={chevronForward} />
           </div>
-          <div className="d-flex px-2 position-absolute bottom-0">
-            <div className="border-start  text-center px-2 border-primary">
+          <div className="d-flex px-2 mt-2">
+            <div className="border-start border-end text-center px-2 border-primary">
               <LessonSvg /> <br />
               <span>0 Cours</span>
             </div>

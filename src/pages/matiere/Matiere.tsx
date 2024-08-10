@@ -336,7 +336,7 @@ const Item: React.FC<ItemProps> = ({ data }) => {
             <span className="fw-bold me-auto">{data.label}</span>
             <IonIcon icon={chevronForward} />
           </div>
-          <div className="d-flex px-2 position-absolute bottom-0">
+          <div className="d-flex px-2 mt-3">
             <div className="border-start border-end text-center px-2 border-primary">
               <LessonSvg /> <br />
               <span>0 Chapitres</span>
