@@ -96,9 +96,13 @@ const Lecon = () => {
         <Container>
           <div className="container-fluid">
             <div className="row mt-2 text-14">
+            <div className="col-12 px-0">
+                <LinkList />
+              </div>
               <div className="text-center fw-bold fs-5">
                 <div className="icon-circle bg-primary mx-auto d-flex align-items-center justify-content-center text-white">
-                  {matiere?.abreviation}
+                {dataShared?.classe?.label}
+                {matiere?.abreviation}
                 </div>
                 <div className="my-2">
                 {chapitre?.label}
@@ -111,11 +115,9 @@ const Lecon = () => {
           </div>
           <div className="container-fluid">
             <div className="row mt-2">
-              {/**
-               * <div className="col-12 px-0">
+            <div className="col-12 px-0">
                 <LinkList />
               </div>
-               */}
               <div className="col-12 text-center mt-2 mb-3">
                 Liste des leçons
               </div>

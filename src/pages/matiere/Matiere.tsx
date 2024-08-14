@@ -12,6 +12,7 @@ import {
   IonListHeader,
   IonModal,
   IonPage,
+  IonPopover,
   IonRow,
   IonSelect,
   IonSelectOption,
@@ -20,7 +21,12 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { notifications, chevronDown, chevronForward } from "ionicons/icons";
+import {
+  notifications,
+  chevronDown,
+  chevronForward,
+  ellipsisVertical,
+} from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import { Container, LinkList } from "../../components";
 import BookSvg from "../../components/svg/BookSvg";
@@ -47,75 +53,17 @@ const Matiere = () => {
   const modalClasse = useRef<HTMLIonModalElement>(null);
   const { dataShared }: any = useDataProvider();
   const [loaded, setLoaded] = useState(false);
+  const { logout } = useAuth();
+  const [isFirstTime, setIsFirstTime] = useState(true)
 
   useEffect(() => {
-    getPeriodeClasse(setPeriodes, setClasses);
+    getPeriodeClasse(setPeriodes, setClasses, isFirstTime, setIsFirstTime);
     get(endPoint.matieres, setDatas, setLoaded);
-  }, [user]);
-  const matieres = [
-    {
-      intitule: "FR",
-      nom: "Français",
-    },
-    {
-      intitule: "Math",
-      nom: "Mathématiques",
-    },
-    {
-      intitule: "PC",
-      nom: "Physique chime",
-    },
-    {
-      intitule: "ALL",
-      nom: "Allemand",
-    },
-    {
-      intitule: "EPS",
-      nom: "Education physique et sportive",
-    },
-    {
-      intitule: "Biblio",
-      nom: "Bibliothèque",
-    },
-  ];
-  const chapitres = [
-    {
-      intitule: <BookSvg />,
-      nom: "Chapitre 1 : L'histoire du Burkina",
-    },
-    {
-      intitule: <BookSvg />,
-      nom: "Chapitre 1 : L'histoire du Burkina",
-    },
-    {
-      intitule: <BookSvg />,
-      nom: "Chapitre 1 : L'histoire du Burkina",
-    },
-    {
-      intitule: <BookSvg />,
-      nom: "Chapitre 1 : L'histoire du Burkina",
-    },
-    {
-      intitule: <BookSvg />,
-      nom: "Chapitre 1 : L'histoire du Burkina",
-    },
-    {
-      intitule: <BookSvg />,
-      nom: "Chapitre 1 : L'histoire du Burkina",
-    },
-  ];
-  const list: any = {
-    0: matieres,
-    1: chapitres,
-  };
-  const changeSection = (e: any, name: any) => {
-    e.preventDefault();
-    setSection(name);
-  };
+  }, [user,dataShared]);
 
-  const customActionSheetOptions = {
-    header: "Periodes",
-    subHeader: "Sélectionnez une période",
+  const deconnection = (e:any) => {
+    logout();
+    navigate(e, "connexion");
   };
 
   return (
@@ -146,6 +94,13 @@ const Matiere = () => {
                   color="medium"
                   className="text-24"
                   icon={notifications}
+                />
+              </IonButton>
+              <IonButton id="popover-button" className="back-circle">
+                <IonIcon
+                  color="medium"
+                  className="text-24"
+                  icon={ellipsisVertical}
                 />
               </IonButton>
             </IonButtons>
@@ -221,7 +176,7 @@ const Matiere = () => {
 
         <IonModal
           ref={modalClasse}
-          initialBreakpoint={0.25}
+          initialBreakpoint={0.75}
           breakpoints={[0, 0.25, 0.5, 0.75]}
         >
           <IonContent>
@@ -242,7 +197,7 @@ const Matiere = () => {
         </IonModal>
         <IonModal
           ref={modalPeriode}
-          initialBreakpoint={0.25}
+          initialBreakpoint={0.75}
           breakpoints={[0, 0.25, 0.5, 0.75]}
         >
           <IonContent>
@@ -261,6 +216,18 @@ const Matiere = () => {
             </Container>
           </IonContent>
         </IonModal>
+        <IonPopover trigger="popover-button" dismissOnSelect={true}>
+          <IonContent>
+            <IonList>
+              <IonItem button={true} detail={false}>
+                A propos
+              </IonItem>
+              <IonItem button={true} detail={false} onClick={deconnection}>
+                Se deconnecter
+              </IonItem>
+            </IonList>
+          </IonContent>
+        </IonPopover>
       </IonContent>
     </IonPage>
   );

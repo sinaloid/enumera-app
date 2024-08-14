@@ -20,6 +20,7 @@ import { useAuth } from "../../hooks";
 import { useEffect } from "react";
 import { Matiere } from "../matiere";
 import { Evaluation } from "../evaluation";
+import CoursStats from "../stats/CoursStats";
 
 const TabsPage: React.FC = () => {
   const {user, isAuth} = useAuth()
@@ -36,7 +37,7 @@ const TabsPage: React.FC = () => {
           <Matiere />
         </Route>
         <Route exact path="/tabs/lesson">
-          <Tab2 />
+          <CoursStats />
         </Route>
         <Route path="/tabs/evaluation">
           <Evaluation />
