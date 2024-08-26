@@ -44,7 +44,7 @@ const Chapitre = () => {
 
   useEffect(() => {
     get(
-      endPoint.chapitres + `/classe/${classeSlug}/periode/${periodeSlug}/matiere/${matiereSlug}`,
+      endPoint.chapitres + `/classe/${classeSlug}/matiere/${matiereSlug}`,
       setDatas,
       setLoaded
     );
@@ -232,7 +232,7 @@ const Item: React.FC<ItemProps> = ({ data }) => {
           <div className="d-flex px-2 mt-2">
             <div className="border-start border-end text-center px-2 border-primary">
               <LessonSvg /> <br />
-              <span>0 Leçons</span>
+              <span>{data.lecons?.length} Leçons</span>
             </div>
           </div>
         </div>

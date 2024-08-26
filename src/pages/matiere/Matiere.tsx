@@ -29,9 +29,7 @@ import {
 } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import { Container, LinkList } from "../../components";
-import BookSvg from "../../components/svg/BookSvg";
 import ClasseSvg from "../../components/svg/ClasseSvg";
-import ExerciceSvg from "../../components/svg/ExerciceSvg";
 import LessonSvg from "../../components/svg/LessonSvg";
 import SuccessSvg from "../../components/svg/SuccessSvg";
 import { useAuth, useDataProvider, useNavigate, useRequest } from "../../hooks";
@@ -306,7 +304,7 @@ const Item: React.FC<ItemProps> = ({ data }) => {
           <div className="d-flex px-2 mt-3">
             <div className="border-start border-end text-center px-2 border-primary">
               <LessonSvg /> <br />
-              <span>0 Chapitres</span>
+              <span>{data.chapitres?.length} Chapitres</span>
             </div>
           </div>
         </div>
