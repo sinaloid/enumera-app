@@ -123,7 +123,7 @@ const Lecon = () => {
               </div>
               {loaded &&
                 datas?.map((data: any) => {
-                  return <Item data={data} />;
+                  return <Item data={data} key={data.slug} />;
                 })}
               {!loaded && <Skeleton />}
             </div>
@@ -207,11 +207,11 @@ const Item: React.FC<ItemProps> = ({ data }) => {
           <div className="d-flex px-2 mt-2">
             <div className="border-start  text-center px-2 border-primary">
               <LessonSvg /> <br />
-              <span>0 Cours</span>
+              <span>{[data.cours]?.length} Cours</span>
             </div>
             <div className="border-start border-end text-center px-2 border-primary">
               <ExerciceSvg /> <br />
-              <span>0 Exercice</span>
+              <span>{data.evaluations_lecons?.length} Exercice</span>
             </div>
           </div>
         </div>

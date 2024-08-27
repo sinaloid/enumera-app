@@ -29,7 +29,9 @@ const Classe: React.FC<ContainerProps> = ({
   const { get } = useRequest();
 
   const getMatiereOnClasseChange = (data: any) => {
-    get(endPoint.matieres + "/classe/" + data.slug, setDatas, setLoaded);
+    //get(endPoint.matieres + "/classe/" + data.slug, setDatas, setLoaded);
+    const periode = localStorage.getItem('periode')
+    get(endPoint.matieres+"/classe/"+data.slug+"/periode/"+periode, setDatas, setLoaded);
   };
 
   return (

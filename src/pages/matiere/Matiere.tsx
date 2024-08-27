@@ -213,6 +213,8 @@ const Matiere = () => {
                     data={data}
                     isActive={dataShared?.periode?.slug === data.slug}
                     modal={modalPeriode}
+                    setDatas={setDatas}
+                    setLoaded={setLoaded}
                   />
                 );
               })}

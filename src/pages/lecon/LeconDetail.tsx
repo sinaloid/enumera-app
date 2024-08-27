@@ -120,10 +120,10 @@ const Cours = () => {
               {loaded && (
                 <>
                   {datas?.cours?.map((data: any) => {
-                    return <Item data={data} />;
+                    return <Item data={data} key={data.slug} />;
                   })}
                   {datas?.evaluations?.map((data: any) => {
-                    return <ItemEvaluation data={data} />;
+                    return <ItemEvaluation data={data} key={data.slug} />;
                   })}
                 </>
               )}
@@ -141,7 +141,7 @@ const Skeleton = () => {
     <>
       {[...Array(10)].map((data, idx) => {
         return (
-          <div className="row px-0">
+          <div className="row px-0" key={idx+data}>
             <IonList className="px-0">
               <IonItem>
                 <IonThumbnail slot="start">
@@ -252,7 +252,7 @@ const ItemEvaluation: React.FC<ItemProps> = ({ data }) => {
           <div className="d-flex px-2 mt-2">
             <div className="border-start border-end text-center px-2 border-primary">
               <LessonSvg /> <br />
-              <span>0 Cours</span>
+              <span>{data.question_lecons?.length} questions</span>
             </div>
           </div>
         </div>

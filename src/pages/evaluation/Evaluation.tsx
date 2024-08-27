@@ -54,6 +54,8 @@ const Evaluation = () => {
     evaluationSlug,
   }: any = useParams();
   const [loaded, setLoaded] = useState(false);
+  const [questions, setQuestions] : any = useState([])
+  const [questionIndex, setQuestionIndex] = useState(0)
 
   useEffect(() => {
     get(
@@ -64,7 +66,13 @@ const Evaluation = () => {
   }, [user]);
 
   useEffect(() => {
-    mediaConfig();
+    //mediaConfig();
+    const tab = datas.question_lecons?.map((data : any) => {
+      data.reponses_list =  data.choix.split(";")
+      return data;
+    })
+    console.log(tab)
+    setQuestions(tab)
   }, [datas]);
 
   const mediaConfig = () => {
@@ -150,18 +158,13 @@ const Evaluation = () => {
             </div>
             <div className="row bg-gray question rounded-3">
               <div className="col-12 p-2 fw-bold">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Repudiandae adipisci voluptate ratione excepturi expedita
-                perspiciatis, pariatur doloribus aut totam at voluptates
-                molestiae soluta, doloremque officia. Fugit consequatur voluptas
-                dolorem tempore.
               </div>
             </div>
           </div>
           <div className="container-fluid mt-4">
             <div className="row mt-2">{!loaded && <Skeleton />}</div>
             <div className="row">
-              {[...Array(4).keys()].map((data, idx) => {
+              {datas?.question_lecons?.map((data, idx) => {
                 return (
                   <div className="d-flex bg-gray mb-3 d-flex px-0" key={idx}>
                     <div className="d-flex align-items-center justify-content-center text-white bg-primary rec-num-size">
@@ -191,7 +194,7 @@ const Skeleton = () => {
     <>
       {[...Array(10)].map((data, idx) => {
         return (
-          <div className="row px-0">
+          <div className="row px-0" key={idx+data}>
             <IonList className="px-0">
               <IonItem>
                 <IonThumbnail slot="start">

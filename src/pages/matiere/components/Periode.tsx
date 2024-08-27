@@ -5,25 +5,35 @@ import {
   radioButtonOnOutline,
 } from "ionicons/icons";
 import React from "react";
-import { useDataProvider } from "../../../hooks";
+import { useDataProvider, useRequest } from "../../../hooks";
 import useFunction from "../../../hooks/useFunction";
 import { ClasseSvg } from "../../../components/svg";
+import { endPoint } from "../../../services";
 
 interface ContainerProps {
   data: any;
   isActive: boolean;
   modal: any;
+  setDatas:any;
+  setLoaded:any;
 }
 
-const Periode: React.FC<ContainerProps> = ({ data, isActive, modal }) => {
+const Periode: React.FC<ContainerProps> = ({ data, isActive, modal,setDatas, setLoaded }) => {
   const { updateDataShared } = useFunction();
-
+  const {get} = useRequest()
+  const getMatiereOnClasseChange = (data: any) => {
+    //get(endPoint.matieres + "/classe/" + data.slug, setDatas, setLoaded);
+    const classe = localStorage.getItem('classe')
+    get(endPoint.matieres+"/classe/"+classe+"/periode/"+data.slug, setDatas, setLoaded);
+  };
   return (
     <div
       className="col-12 px-0 bg-primary-light mb-3"
       onClick={(e: any) => {
         e.preventDefault();
         updateDataShared("periode", data);
+        setLoaded(false)
+        getMatiereOnClasseChange(data)
         modal.current?.dismiss();
       }}
     >
