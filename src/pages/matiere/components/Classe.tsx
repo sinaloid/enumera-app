@@ -7,15 +7,30 @@ import {
 import React from "react";
 import useFunction from "../../../hooks/useFunction";
 import { ClasseSvg } from "../../../components/svg";
+import { useRequest } from "../../../hooks";
+import { endPoint } from "../../../services";
 
 interface ContainerProps {
   data: any;
   isActive: boolean;
   modal: any;
+  setDatas: any;
+  setLoaded:any
 }
 
-const Classe: React.FC<ContainerProps> = ({ data, isActive, modal }) => {
+const Classe: React.FC<ContainerProps> = ({
+  data,
+  isActive,
+  modal,
+  setDatas,
+  setLoaded
+}) => {
   const { updateDataShared } = useFunction();
+  const { get } = useRequest();
+
+  const getMatiereOnClasseChange = (data: any) => {
+    get(endPoint.matieres + "/classe/" + data.slug, setDatas, setLoaded);
+  };
 
   return (
     <div
@@ -23,11 +38,16 @@ const Classe: React.FC<ContainerProps> = ({ data, isActive, modal }) => {
       onClick={(e: any) => {
         e.preventDefault();
         updateDataShared("classe", data);
+        setLoaded(false)
+        getMatiereOnClasseChange(data);
         modal.current?.dismiss();
       }}
     >
       <div className="d-flex">
-        <div className="bg-primary text-center  p-2" style={{ minWidth: "83px" }}>
+        <div
+          className="bg-primary text-center  p-2"
+          style={{ minWidth: "83px" }}
+        >
           <span className="text-white fw-bold">
             <ClasseSvg />
           </span>

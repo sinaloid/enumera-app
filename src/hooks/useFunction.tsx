@@ -8,6 +8,7 @@ const useFunction = () => {
       ...dataShared,
       [key]: data,
     });
+    localStorage.setItem(key,data.slug)
   };
 
   return {

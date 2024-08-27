@@ -47,6 +47,8 @@ const useRequestMatiere = () => {
             periode: periode,
             classe: res.data.data[0],
           });
+          localStorage.setItem('periode',periode.slug)
+          localStorage.setItem('classe',res.data.data[0].slug)
           setIsFirstTime(false);
         }
       })

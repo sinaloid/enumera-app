@@ -53,11 +53,14 @@ const Matiere = () => {
   const [loaded, setLoaded] = useState(false);
   const { logout } = useAuth();
   const [isFirstTime, setIsFirstTime] = useState(true)
+  
 
   useEffect(() => {
     getPeriodeClasse(setPeriodes, setClasses, isFirstTime, setIsFirstTime);
-    get(endPoint.matieres, setDatas, setLoaded);
-  }, [user,dataShared]);
+    const classe = localStorage.getItem('classe')
+    const periode = localStorage.getItem('periode')
+    get(endPoint.matieres+"/classe/"+classe+"/periode/"+periode, setDatas, setLoaded);
+  }, [user]);
 
   const deconnection = (e:any) => {
     logout();
@@ -187,6 +190,8 @@ const Matiere = () => {
                     data={data}
                     isActive={dataShared?.classe?.slug === data.slug}
                     modal={modalClasse}
+                    setDatas={setDatas}
+                    setLoaded={setLoaded}
                   />
                 );
               })}
@@ -285,20 +290,20 @@ const Item: React.FC<ItemProps> = ({ data }) => {
       onClick={(e) => {
         navigate(
           e,
-          `classes/${dataShared?.classe?.slug}/periodes/${dataShared?.periode?.slug}/matieres/${data?.slug}/chapitres`
+          `classes/${dataShared?.classe?.slug}/periodes/${dataShared?.periode?.slug}/matieres/${data.matiere?.slug}/chapitres`
         );
-        updateDataShared("matiere", data);
+        updateDataShared("matiere", data.matiere);
       }}
     >
       <div className="d-flex">
         <div className="bg-primary rect-icon">
           <span className="text-white fw-bold text-uppercase">
-            {data.abreviation}
+            {data.matiere?.abreviation}
           </span>
         </div>
         <div className="w-100 text-primary position-relative">
           <div className="d-flex align-items-center px-2">
-            <span className="fw-bold me-auto">{data.label}</span>
+            <span className="fw-bold me-auto">{data.matiere?.label}</span>
             <IonIcon icon={chevronForward} />
           </div>
           <div className="d-flex px-2 mt-3">
