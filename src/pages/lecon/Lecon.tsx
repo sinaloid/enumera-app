@@ -54,7 +54,7 @@ const Lecon = () => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    get(endPoint.lecons + `/chapitre/${chapitreSlug}`, setDatas, setLoaded);
+    get(endPoint.lecons + `/classe/${classeSlug}/periode/${periodeSlug}/matiere/${matiereSlug}/chapitre/${chapitreSlug}`, setDatas, setLoaded);
     get(endPoint.chapitres + `/${chapitreSlug}`, setChapitre, setLoaded);
     get(endPoint.matieres + `/${matiereSlug}`, setMatiere, setLoaded);
   }, [user]);
