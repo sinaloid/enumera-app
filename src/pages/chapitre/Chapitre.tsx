@@ -44,7 +44,7 @@ const Chapitre = () => {
 
   useEffect(() => {
     get(
-      endPoint.chapitres + `/classe/${classeSlug}/matiere/${matiereSlug}`,
+      endPoint.chapitres + `/classe/${classeSlug}/periode/${periodeSlug}/matiere/${matiereSlug}`,
       setDatas,
       setLoaded
     );
