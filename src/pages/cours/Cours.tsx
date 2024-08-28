@@ -34,6 +34,7 @@ import {
 import { useAuth, useDataProvider, useNavigate, useRequest } from "../../hooks";
 import { endPoint } from "../../services";
 import { useParams } from "react-router";
+import ZoomableIframe from "./ZoomableIframe";
 
 const Lecon = () => {
   const { user } = useAuth();
@@ -150,9 +151,15 @@ const Lecon = () => {
               <div className="col-12 text-center mt-2 mb-3">Cours</div>
               {loaded && (
                 <>
-                  <div
+                  {/**
+                   * <div
                     dangerouslySetInnerHTML={{ __html: datas?.description }}
                   />
+                   */}
+
+                  <ZoomableIframe
+                    description={datas?.description}
+                  ></ZoomableIframe>
                 </>
               )}
               {!loaded && <Skeleton />}
