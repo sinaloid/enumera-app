@@ -31,17 +31,18 @@ import {
   Container,
   LinkList,
 } from "../../components";
-import { useAuth, useDataProvider, useNavigate, useRequest } from "../../hooks";
+import { useAuth, useDataProvider, useNavigate } from "../../hooks";
 import { endPoint } from "../../services";
 import { useParams } from "react-router";
 import "./Evaluation.css";
+import useRequestEvaluation from "./hooks/useRequest";
 const Evaluation = () => {
   const { user } = useAuth();
   const [section, setSection] = useState(0);
   const [datas, setDatas] = useState<any>([]);
   const [periodes, setPeriodes] = useState<any>([]);
   const [classes, setClasses] = useState<any>([]);
-  const { get } = useRequest();
+  const { getEvaluation } = useRequestEvaluation();
   const { navigate } = useNavigate();
   const modalPeriode = useRef<HTMLIonModalElement>(null);
   const modalClasse = useRef<HTMLIonModalElement>(null);
@@ -55,12 +56,13 @@ const Evaluation = () => {
   }: any = useParams();
   const [loaded, setLoaded] = useState(false);
   const [questions, setQuestions] : any = useState([])
-  const [questionIndex, setQuestionIndex] = useState(0)
+  const [questionIndex, setQuestionIndex] = useState(1)
 
   useEffect(() => {
-    get(
+    getEvaluation(
       endPoint.evaluations_lecons + `/${evaluationSlug}`,
       setDatas,
+      setQuestions,
       setLoaded
     );
   }, [user]);
@@ -68,12 +70,16 @@ const Evaluation = () => {
   useEffect(() => {
     //mediaConfig();
     const tab = datas.question_lecons?.map((data : any) => {
-      data.reponses_list =  data.choix.split(";")
+      //data.reponses_list =  data.choix.split(";")
       return data;
     })
     console.log(tab)
-    setQuestions(tab)
+    //setQuestions(tab)
   }, [datas]);
+
+  const addChoix = (e:any, idx:any) => {
+    e.preventDefault()
+  }
 
   const mediaConfig = () => {
     const videos = document.querySelectorAll("video");
@@ -144,41 +150,44 @@ const Evaluation = () => {
               <div className="d-flex align-items-center w-100">
                 <div className="me-auto">
                   <div className="w-100 text-primary fw-bold">Questions</div>
-                  <div className="text-center fw-bold">1/20</div>
+                  <div className="text-center fw-bold">{questionIndex}/{datas?.question_lecons?.length}</div>
                 </div>
                 <div className="evalu-circle d-flex align-items-center justify-content-center">
-                  <span>1 pts</span>
+                  <span>0 pts</span>
                 </div>
               </div>
               <div className="progress-bar my-4 rounded-5 px-0">
-                <div className="w-50 progress-bar bg-primary text-center text-white fw-bold">
-                  50%
+                <div className=" progress-bar bg-primary text-center text-white fw-bold" style={{
+                  width:`${(questionIndex*100)/datas?.question_lecons?.length}%`
+                }}>
+                  {parseInt(""+(questionIndex*100)/datas?.question_lecons?.length)}%
                 </div>
               </div>
             </div>
             <div className="row bg-gray question rounded-3">
               <div className="col-12 p-2 fw-bold">
+                {questions.question}
               </div>
             </div>
           </div>
           <div className="container-fluid mt-4">
             <div className="row mt-2">{!loaded && <Skeleton />}</div>
             <div className="row">
-              {datas?.question_lecons?.map((data, idx) => {
+              {questions?.choix?.map((data : any, idx :any) => {
                 return (
-                  <div className="d-flex bg-gray mb-3 d-flex px-0" key={idx}>
+                  <div className="d-flex bg-gray mb-3 d-flex px-0" key={idx} onClick={e => addChoix(e, idx+1)}>
                     <div className="d-flex align-items-center justify-content-center text-white bg-primary rec-num-size">
                       {idx + 1}
                     </div>
                     <div className="p-2">
-                      Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                      {data}
                     </div>
                   </div>
                 );
               })}
             </div>
             <div className="d-flex justify-content-center">
-              <IonButton className="w-75" shape="round">
+              <IonButton className="w-75" shape="round" >
                 Valider
               </IonButton>
             </div>
