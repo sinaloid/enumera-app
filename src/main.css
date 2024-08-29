@@ -29,6 +29,11 @@
   color: var(--ion-color-primary) !important;
 }
 
+.text-secondary {
+  color: #cd5c08 !important;
+}
+
+
 .i-24{
     font-size: 24px;
 }
@@ -90,6 +95,12 @@ ion-input > ion-button > button{
   background-color: #f6f6f6;
 }
 
+.bg-secondary{
+  background-color: #cd5c08 !important;
+}
+.bg-secondary-light{
+  background-color: #f9ebe0 !important;
+}
 .bg-primary-light{
   background-color: rgba(37, 7, 219, 0.1) !important;
 }

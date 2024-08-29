@@ -2,6 +2,7 @@ import "./Login.css";
 import logo from "../../assets/images/logo.png";
 import {
   IonButton,
+  IonCheckbox,
   IonCol,
   IonContent,
   IonGrid,
@@ -13,10 +14,12 @@ import {
   IonLoading,
   IonPage,
   IonRow,
+  IonSelect,
+  IonSelectOption,
   IonSpinner,
   useIonLoading,
 } from "@ionic/react";
-import { lockClosed, navigate } from "ionicons/icons";
+import { lockClosed } from "ionicons/icons";
 import IdSvg from "../../components/svg/IdSvg";
 import LockSvg from "../../components/svg/LockSvg";
 import { useHistory } from "react-router";
@@ -28,42 +31,56 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useEffect, useState } from "react";
 const validateData = Yup.object({
-  user: Yup.string()
-    .email("Adresse e-mail invalide")
-    .required("Ce champ est obligatoire. Veuillez le remplir pour continuer"),
-  password: Yup.string()
-    .min(8, "Le mot de passe doit contenir 8 caractères ou moins")
+  email: Yup.string().required(
+    "Ce champ est obligatoire. Veuillez le remplir pour continuer"
+  ),
+  otp: Yup.string()
+    .min(6, "Le code otp doit contenir 6 caractères ou moins")
     .required("Ce champ est obligatoire. Veuillez le remplir pour continuer"),
 });
-const LoginPage: React.FC = () => {
+const VerifyOtpPage: React.FC = () => {
   const history = useHistory();
   const { user, login, logout, isAuth } = useAuth();
-  const { post } = useRequest();
+  const { getOtp, verifyOtp } = useRequest();
   const [present, dismiss] = useIonLoading();
   const [error, setError] = useState("");
+  const [isCreated, setIsCreated] = useState(false);
+
   useEffect(() => {
-    if (isAuth()) {
-      history.replace("tabs");
-    }
-  }, [user]);
+    if (isCreated) {
+      history.push("login");
+    } 
+
+    formik.setFieldValue("email", localStorage.getItem("email"));
+  }, [isCreated]);
 
   const formik = useFormik({
     validationSchema: validateData,
     initialValues: {
-      user: "ounoid@gmail.com",
-      password: "12345678",
+      nom: "",
+      prenom: "",
+      date_de_naissance: "",
+      telephone: "",
+      genre: "",
+      profile: "",
+      email: "",
+      password: "",
     },
     onSubmit: (values) => {
-      handleLogout()
+      //handleLogout();
       present({
-        message: "Connexion...",
+        message: "Vérification du code OTP...",
       });
-      post(endPoint.login, values, login, dismiss, setError);
+      console.log(values);
+      verifyOtp("verify-otp", values, setIsCreated, dismiss, setError);
     },
   });
 
-  const handleLogout = () => {
-    logout();
+  const handleOtp = () => {
+    present({
+      message: "Envoi du code OTP...",
+    });
+    getOtp('get-otp',{email:formik.values['email']}, dismiss, setError);
   };
 
   return (
@@ -79,36 +96,34 @@ const LoginPage: React.FC = () => {
             />
           </div>
           <h1 className="text-center ion-text-uppercase title-3 my-3 fw-bold">
-            Connexion
+            Verification du code OTP
           </h1>
+          <p className="text-center">
+            Veuillez entre le code OTP que nous avons envoyer a votre adresse
+            mail <br />{" "}
+            <span className="text-primary fw-bold">
+              {formik.values["email"]}
+            </span>
+          </p>
           {error && (
             <div className="text-danger fw-bold text-center">{error}</div>
           )}
           <IonGrid>
             <IonRow>
               <Input
-                type={"email"}
-                label={"Numéro matricule ou de téléphone"}
-                placeholder={"Entrez votre numéro matricule ou de téléphone"}
+                type={"text"}
+                label={"Code OTP"}
+                placeholder={"Entrez votre le code OTP"}
                 formik={formik}
-                name={"user"}
+                name={"otp"}
               >
                 <span slot="start" className="pe-">
                   <IdSvg />
                 </span>
               </Input>
-              <Input
-                type={"password"}
-                label={"Mot de passe"}
-                placeholder={"Entrez votre mot de passe"}
-                formik={formik}
-                name={"password"}
-              >
-                <span slot="start" className="p- i-24 m-">
-                  <LockSvg />
-                </span>
-                <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
-              </Input>
+              <IonCol>
+                <span className="fw-bold text-primary" onClick={handleOtp}>Renvoyer le code</span>
+              </IonCol>
             </IonRow>
           </IonGrid>
           <div className="d-flex ion-justify-content-center my-3">
@@ -119,7 +134,7 @@ const LoginPage: React.FC = () => {
               className="w-75"
               //id="open-loading"
             >
-              Se connecter
+              S'inscrire
             </IonButton>
           </div>
           <div className="d-flex ion-justify-content-center my-3">
@@ -129,17 +144,10 @@ const LoginPage: React.FC = () => {
               spinner="circles"
             />
           </div>
-          <div className="text-center">
-            <span>Vous n'avez pas de compte ?</span> <br />
-            <span className="text-primary fw-bold" onClick={e =>{
-              e.preventDefault()
-              history.push('register')
-            }}>Inscrivez-vous ici</span>
-          </div>
         </Container>
       </IonContent>
     </IonPage>
   );
 };
 
-export default LoginPage;
+export default VerifyOtpPage;

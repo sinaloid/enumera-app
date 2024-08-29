@@ -164,7 +164,9 @@ const Matiere = () => {
                 <LinkList />
               </div>
               <div className="col-12 text-center mt-2 mb-3">
+                <span className="bg-primary-light text-danger fw-bold px-3 py-2">
                 Liste des matières
+                </span>
               </div>
               {loaded &&
                 datas?.map((data: any) => {

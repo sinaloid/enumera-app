@@ -101,8 +101,8 @@ const Lecon = () => {
               </div>
               <div className="text-center fw-bold fs-5">
                 <div className="icon-circle bg-primary mx-auto d-flex align-items-center justify-content-center text-white">
-                {dataShared?.classe?.label}
-                {matiere?.abreviation}
+                {dataShared?.classe?.label}<br />
+                {" "+matiere?.abreviation}
                 </div>
                 <div className="my-2">
                 {chapitre?.label}
@@ -119,7 +119,9 @@ const Lecon = () => {
                 <LinkList />
               </div>
               <div className="col-12 text-center mt-2 mb-3">
+                <span className="bg-primary-light text-danger fw-bold px-3 py-2">
                 Liste des leçons
+                </span>
               </div>
               {loaded &&
                 datas?.map((data: any) => {

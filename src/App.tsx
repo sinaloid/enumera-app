@@ -40,6 +40,8 @@ import { useEffect } from "react";
 import { Chapitre, Cours, Lecon, LeconDetail, Matiere } from "./pages";
 import { Evaluation } from "./pages/evaluation";
 import CoursStatsDetail from "./pages/stats/CoursStatsDetail";
+import RegisterPage from "./pages/auth/RegisterPage";
+import VerifyOtpPage from "./pages/auth/VerifyOtpPage";
 
 setupIonicReact();
 
@@ -56,6 +58,12 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/login">
             <LoginPage />
+          </Route>
+          <Route exact path="/register">
+            <RegisterPage />
+          </Route>
+          <Route exact path="/verify-otp">
+            <VerifyOtpPage />
           </Route>
           <Route
             exact

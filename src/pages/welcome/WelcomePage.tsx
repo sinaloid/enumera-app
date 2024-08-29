@@ -50,7 +50,11 @@ const WelcomePage: React.FC = () => {
             </IonButton>
           </div>
           <div className="d-flex ion-justify-content-center mb-3">
-            <IonButton shape="round" className="secondary w-75">
+            <IonButton
+              onClick={(e) => navigate(e, "register")}
+              shape="round"
+              className="secondary w-75"
+            >
               Inscription
             </IonButton>
           </div>

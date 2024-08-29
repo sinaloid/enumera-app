@@ -97,25 +97,24 @@ const Cours = () => {
             <div className="row mt-2 text-14">
               <div className="text-center fs-5">
                 <div className="icon-circle bg-primary mx-auto d-flex align-items-center justify-content-center text-white">
-                  {matiere?.abreviation}
+                {dataShared?.classe?.label}<br />
+                {" "+matiere?.abreviation}
                 </div>
-                <div className="my-2 text-14 text-muted">{chapitre?.label}</div>
-                <div className="my-2 fw-bold">{datas?.lecon?.label}</div>
+                <div className="my-2 text-14 fw-bold">{chapitre?.label}</div>
+                <div className="my-2 fw-bold">{datas?.lecon?.label.split(":")[1]}</div>
               </div>
-              <div className="col-12 mt-2 text-14 py-2 text-center bg-gray">
-                Messages défilantes : Actualités et évènements
-              </div>
+              
             </div>
           </div>
           <div className="container-fluid">
             <div className="row mt-2">
-              {/**
-               * <div className="col-12 px-0">
+            <div className="col-12 px-0">
                 <LinkList />
               </div>
-               */}
               <div className="col-12 text-center mt-2 mb-3">
+                <span className="bg-primary-light text-danger fw-bold px-3 py-2">
                 Cours et exercices
+                </span>
               </div>
               {loaded && (
                 <>
@@ -203,8 +202,8 @@ const Item: React.FC<ItemProps> = ({ data }) => {
         </div>
         <div className="w-100 text-primary position-relative">
           <div className="d-flex align-items-center px-2">
-            <span className="fw-bold me-auto text-lowercase">
-              Cours : {data?.label?.split(":")[1]}
+            <span className="fw-bold me-auto">
+               {data?.label?.split(":")[1]}
             </span>
             <IonIcon icon={chevronForward} />
           </div>
@@ -227,7 +226,7 @@ const ItemEvaluation: React.FC<ItemProps> = ({ data }) => {
   const { updateDataShared } = useFunction();
   return (
     <div
-      className="col-12 px-0 bg-primary-light mb-3"
+      className="col-12 px-0 bg-secondary-light bg-warning mb-3"
       onClick={(e) => {
         navigate(
           e,
@@ -237,21 +236,21 @@ const ItemEvaluation: React.FC<ItemProps> = ({ data }) => {
       }}
     >
       <div className="d-flex">
-        <div className="bg-primary rect-icon">
+        <div className="bg-secondary rect-icon">
           <span className="text-white fw-bold text-uppercase">
             <ExerciceSvg />
           </span>
         </div>
         <div className="w-100 text-primary position-relative">
           <div className="d-flex align-items-center px-2">
-            <span className="fw-bold me-auto text-lowercase">
+            <span className="fw-bold me-auto">
               {data?.label}
             </span>
             <IonIcon icon={chevronForward} />
           </div>
           <div className="d-flex px-2 mt-2">
             <div className="border-start border-end text-center px-2 border-primary">
-              <LessonSvg /> <br />
+              <ExerciceSvg /> <br />
               <span>{data.question_lecons?.length} questions</span>
             </div>
           </div>

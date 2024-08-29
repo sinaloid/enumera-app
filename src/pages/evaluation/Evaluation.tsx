@@ -20,7 +20,13 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { notifications, chevronDown, chevronForward } from "ionicons/icons";
+import {
+  notifications,
+  chevronDown,
+  chevronForward,
+  radioButtonOnOutline,
+  radioButtonOffOutline,
+} from "ionicons/icons";
 import { useEffect, useRef, useState } from "react";
 import {
   ClasseSvg,
@@ -55,8 +61,10 @@ const Evaluation = () => {
     evaluationSlug,
   }: any = useParams();
   const [loaded, setLoaded] = useState(false);
-  const [questions, setQuestions] : any = useState([])
-  const [questionIndex, setQuestionIndex] = useState(1)
+  const [questions, setQuestions]: any = useState([]);
+  const [questionIndex, setQuestionIndex] = useState(0);
+  const [currentChoix, setCurrentChoix] = useState("");
+  const [point, setPoint] = useState(0);
 
   useEffect(() => {
     getEvaluation(
@@ -69,16 +77,36 @@ const Evaluation = () => {
 
   useEffect(() => {
     //mediaConfig();
-    const tab = datas.question_lecons?.map((data : any) => {
+    const tab = datas.question_lecons?.map((data: any) => {
       //data.reponses_list =  data.choix.split(";")
       return data;
-    })
-    console.log(tab)
+    });
+    console.log(tab);
     //setQuestions(tab)
   }, [datas]);
 
-  const addChoix = (e:any, idx:any) => {
-    e.preventDefault()
+  const addChoix = (e: any, idx: any) => {
+    e.preventDefault();
+  };
+
+  const sendReponse = (e: any) => {
+    e.preventDefault();
+
+    console.log(questions.reponses.includes(currentChoix));
+    if (questions.reponses.includes(currentChoix)) {
+      const pointActuel = point + parseInt(questions.point);
+      setPoint(pointActuel);
+    }
+    if (questionIndex + 1 < datas.question_lecons.length) {
+      setQuestions(datas.question_lecons[questionIndex + 1]);
+    }
+    setQuestionIndex(questionIndex + 1);
+    setCurrentChoix("");
+  };
+
+  const goToResult = () => {
+
+
   }
 
   const mediaConfig = () => {
@@ -150,46 +178,87 @@ const Evaluation = () => {
               <div className="d-flex align-items-center w-100">
                 <div className="me-auto">
                   <div className="w-100 text-primary fw-bold">Questions</div>
-                  <div className="text-center fw-bold">{questionIndex}/{datas?.question_lecons?.length}</div>
+                  <div className="text-center fw-bold">
+                    {questionIndex}/{datas?.question_lecons?.length}
+                  </div>
                 </div>
                 <div className="evalu-circle d-flex align-items-center justify-content-center">
-                  <span>0 pts</span>
+                  <span>{point} pts</span>
                 </div>
               </div>
               <div className="progress-bar my-4 rounded-5 px-0">
-                <div className=" progress-bar bg-primary text-center text-white fw-bold" style={{
-                  width:`${(questionIndex*100)/datas?.question_lecons?.length}%`
-                }}>
-                  {parseInt(""+(questionIndex*100)/datas?.question_lecons?.length)}%
+                <div
+                  className=" progress-bar bg-primary text-center text-white fw-bold"
+                  style={{
+                    width: `${
+                      (questionIndex * 100) / datas?.question_lecons?.length
+                    }%`,
+                  }}
+                >
+                  {parseInt(
+                    "" + (questionIndex * 100) / datas?.question_lecons?.length
+                  )}
+                  %
                 </div>
               </div>
             </div>
             <div className="row bg-gray question rounded-3">
-              <div className="col-12 p-2 fw-bold">
-                {questions.question}
-              </div>
+              <div className="col-12 p-2 fw-bold">{questions.question}</div>
             </div>
           </div>
           <div className="container-fluid mt-4">
             <div className="row mt-2">{!loaded && <Skeleton />}</div>
             <div className="row">
-              {questions?.choix?.map((data : any, idx :any) => {
+              {questions?.choix?.map((data: any, idx: any) => {
                 return (
-                  <div className="d-flex bg-gray mb-3 d-flex px-0" key={idx} onClick={e => addChoix(e, idx+1)}>
+                  <div
+                    className={`d-flex bg-gray mb-3 d-flex px-0 border ${
+                      currentChoix === "" + (idx + 1) && " border-primary"
+                    }`}
+                    key={idx}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setCurrentChoix("" + (idx + 1));
+                    }}
+                  >
                     <div className="d-flex align-items-center justify-content-center text-white bg-primary rec-num-size">
                       {idx + 1}
                     </div>
-                    <div className="p-2">
-                      {data}
+                    <div className="p-2 ">{data}</div>
+                    <div className="ms-auto text-primary d-flex align-items-center px-1">
+                      {currentChoix === "" + (idx + 1) ? (
+                        <IonIcon icon={radioButtonOnOutline} />
+                      ) : (
+                        <IonIcon icon={radioButtonOffOutline} />
+                      )}
                     </div>
                   </div>
                 );
               })}
             </div>
             <div className="d-flex justify-content-center">
-              <IonButton className="w-75" shape="round" >
-                Valider
-              </IonButton>
+              {questionIndex + 1 <= datas.question_lecons?.length && (
+                <>
+                  <IonButton
+                    className="w-75"
+                    shape="round"
+                    onClick={sendReponse}
+                  >
+                    Valider
+                  </IonButton>
+                </>
+              )}
+              {questionIndex + 1 > datas.question_lecons?.length && (
+                <>
+                  <IonButton
+                    className="w-75"
+                    shape="round"
+                    onClick={goToResult}
+                  >
+                    Terminer
+                  </IonButton>
+                </>
+              )}
             </div>
           </div>
         </Container>
@@ -203,7 +272,7 @@ const Skeleton = () => {
     <>
       {[...Array(10)].map((data, idx) => {
         return (
-          <div className="row px-0" key={idx+data}>
+          <div className="row px-0" key={idx + data}>
             <IonList className="px-0">
               <IonItem>
                 <IonThumbnail slot="start">

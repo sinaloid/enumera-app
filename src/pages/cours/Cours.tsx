@@ -131,9 +131,11 @@ const Lecon = () => {
             <div className="row mt-2 text-14 border-bottom">
               <div className="text-center fs-5">
                 <div className="icon-circle bg-primary mx-auto d-flex align-items-center justify-content-center text-white">
-                  {matiere?.abreviation}
+                  {dataShared?.classe?.label}
+                  <br />
+                  {" " + matiere?.abreviation}
                 </div>
-                <div className="my-2 text-12 text-muted">{chapitre?.label}</div>
+                <div className="my-2 text-12 fw-bold">{chapitre?.label}</div>
                 <div className="my-2 fw-bold text-14">{lecon?.label}</div>
               </div>
               {/**
@@ -145,10 +147,10 @@ const Lecon = () => {
           </div>
           <div className="container-fluid">
             <div className="row mt-2">
-              {/**<div className="col-12 px-0">
+              <div className="col-12 px-0">
                 <LinkList />
-              </div> */}
-              <div className="col-12 text-center mt-2 mb-3">Cours</div>
+              </div>
+              
               {loaded && (
                 <>
                   {/**
