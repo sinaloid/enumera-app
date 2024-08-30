@@ -21,6 +21,7 @@ import { useEffect } from "react";
 import { Matiere } from "../matiere";
 import { Evaluation } from "../evaluation";
 import CoursStats from "../stats/CoursStats";
+import EvaluationListe from "../evaluation/EvaluationListe";
 
 const TabsPage: React.FC = () => {
   const {user, isAuth} = useAuth()
@@ -40,7 +41,7 @@ const TabsPage: React.FC = () => {
           <CoursStats />
         </Route>
         <Route path="/tabs/evaluation">
-          <Evaluation />
+          <EvaluationListe />
         </Route>
         <Route path="/tabs/compte">
           <Tab3 />
@@ -56,7 +57,7 @@ const TabsPage: React.FC = () => {
         </IonTabButton>
         <IonTabButton tab="lesson" href="/tabs/lesson">
           <LessonSvg />
-          <IonLabel>Mes cours</IonLabel>
+          <IonLabel>Classe virtuelle</IonLabel>
         </IonTabButton>
         <IonTabButton tab="challenge" href="/tabs/evaluation">
           <ChallengeSvg />

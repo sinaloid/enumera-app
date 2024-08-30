@@ -42,13 +42,13 @@ import { endPoint } from "../../services";
 import { useParams } from "react-router";
 import "./Evaluation.css";
 import useRequestEvaluation from "./hooks/useRequest";
-const Evaluation = () => {
+const EvaluationLecon = () => {
   const { user } = useAuth();
   const [section, setSection] = useState(0);
   const [datas, setDatas] = useState<any>([]);
   const [periodes, setPeriodes] = useState<any>([]);
   const [classes, setClasses] = useState<any>([]);
-  const { getEvaluationTest } = useRequestEvaluation();
+  const { getEvaluation } = useRequestEvaluation();
   const { navigate } = useNavigate();
   const modalPeriode = useRef<HTMLIonModalElement>(null);
   const modalClasse = useRef<HTMLIonModalElement>(null);
@@ -67,8 +67,8 @@ const Evaluation = () => {
   const [point, setPoint] = useState(0);
 
   useEffect(() => {
-    getEvaluationTest(
-      endPoint.evaluations + `/${evaluationSlug}`,
+    getEvaluation(
+      endPoint.evaluations_lecons + `/${evaluationSlug}`,
       setDatas,
       setQuestions,
       setLoaded
@@ -104,9 +104,12 @@ const Evaluation = () => {
     setCurrentChoix("");
   };
 
-  const goToResult = (e:any) => {
-    localStorage.setItem('point',""+point+"/"+datas.question_lecons.length)
-    navigate(e,'resultat','replace')
+  const goToResult = (e: any) => {
+    localStorage.setItem(
+      "point",
+      "" + point + "/" + datas.question_lecons.length
+    );
+    navigate(e, "resultat", "replace");
   };
 
   const mediaConfig = () => {
@@ -205,7 +208,7 @@ const Evaluation = () => {
                   </div>
                   <div className="row bg-gray question rounded-3">
                     <div className="col-12 p-2 fw-bold">
-                      {questions.question}
+                      {questions?.question}
                     </div>
                   </div>
                   <div className="container-fluid mt-4">
@@ -314,4 +317,4 @@ const Skeleton = () => {
   );
 };
 
-export default Evaluation;
+export default EvaluationLecon;

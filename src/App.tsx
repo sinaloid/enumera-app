@@ -38,10 +38,11 @@ import LoginPage from "./pages/auth/LoginPage";
 import { useAuth } from "./hooks";
 import { useEffect } from "react";
 import { Chapitre, Cours, Lecon, LeconDetail, Matiere } from "./pages";
-import { Evaluation } from "./pages/evaluation";
+import { Evaluation,EvaluationLecon } from "./pages/evaluation";
 import CoursStatsDetail from "./pages/stats/CoursStatsDetail";
 import RegisterPage from "./pages/auth/RegisterPage";
 import VerifyOtpPage from "./pages/auth/VerifyOtpPage";
+import Resultat from "./pages/evaluation/Resultat";
 
 setupIonicReact();
 
@@ -64,6 +65,18 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/verify-otp">
             <VerifyOtpPage />
+          </Route>
+          <Route
+            exact
+            path="/evaluation/:evaluationSlug/question"
+          >
+            <Evaluation />
+          </Route>
+          <Route
+            exact
+            path="/resultat"
+          >
+            <Resultat />
           </Route>
           <Route
             exact
@@ -99,7 +112,7 @@ const App: React.FC = () => {
             exact
             path="/classes/:classeSlug/periodes/:periodeSlug/matieres/:matiereSlug/chapitres/:chapitreSlug/lecons/:leconSlug/evaluation/:evaluationSlug"
           >
-            <Evaluation />
+            <EvaluationLecon />
           </Route>
           <Route path="/tabs">
             <TabsPage />

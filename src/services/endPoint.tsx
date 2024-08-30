@@ -7,6 +7,8 @@ const endPoint = {
     lecons:"lecons",
     cours:"cours",
     evaluations_lecons:"evaluations-lecons",
+    evaluations:"evaluations",
+    questions:"questions",
 
 
 

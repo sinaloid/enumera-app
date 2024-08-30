@@ -34,6 +34,28 @@ const useRequestEvaluation = () => {
       });
   };
 
+  const getEvaluationTest = async ( endPoint:any, setDatas: any, setQuestions:any, setLoaded : any = () => {}) => {
+    await request
+      .get(endPoint, headers)
+      .then((res: any) => {
+        console.log(res.data.data)
+        const tab = res.data.data.questions.map((data : any) => {
+          data.choix = data.choix.split(';');
+          return data
+        })
+        setQuestions(tab[0])
+        console.log(tab[0])
+        setDatas({
+          ...res.data.data,
+          question_lecons:tab
+        })
+        setLoaded(true)
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  };
+
   const get = async ( endPoint:any, setDatas: any, setLoaded : any = () => {}) => {
     await request
       .get(endPoint, headers)
@@ -54,7 +76,8 @@ const useRequestEvaluation = () => {
 
   return {
     get,
-    getEvaluation
+    getEvaluation,
+    getEvaluationTest
   };
 };
 
