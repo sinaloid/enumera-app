@@ -10,13 +10,11 @@ import { DataProvider } from "./context";
 const container = document.getElementById("root");
 const root = createRoot(container!);
 root.render(
-  <React.StrictMode>
-    <AppContextProvider>
-      <AuthProvider>
-        <DataProvider>
-          <App />
-        </DataProvider>
-      </AuthProvider>
-    </AppContextProvider>
-  </React.StrictMode>
+  <AppContextProvider>
+    <AuthProvider>
+      <DataProvider>
+        <App />
+      </DataProvider>
+    </AuthProvider>
+  </AppContextProvider>
 );

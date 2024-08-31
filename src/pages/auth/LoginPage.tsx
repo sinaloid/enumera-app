@@ -27,6 +27,12 @@ import { endPoint, request } from "../../services";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useEffect, useState } from "react";
+
+import sos from "../../assets/images/sos_village_.png";
+import kamalpha from "../../assets/images/kamalpha.jpeg";
+import armories from "../../assets/images/armoiries.png";
+import enumera from "../../assets/images/enumera.png";
+
 const validateData = Yup.object({
   user: Yup.string()
     .email("Adresse e-mail invalide")
@@ -54,7 +60,7 @@ const LoginPage: React.FC = () => {
       password: "12345678",
     },
     onSubmit: (values) => {
-      handleLogout()
+      handleLogout();
       present({
         message: "Connexion...",
       });
@@ -70,15 +76,15 @@ const LoginPage: React.FC = () => {
     <IonPage>
       <IonContent>
         <Container sizeMd={"4"}>
-          <div className="d-flex ion-justify-content-center">
+          <div className="d-flex justify-content-center">
             <img
-              className="welcome-img"
+              className="welcome-img p-2"
               width={"50%"}
               src={logo}
               alt="logo enumera"
             />
           </div>
-          <h1 className="text-center ion-text-uppercase title-3 my-3 fw-bold">
+          <h1 className="text-center ion-text-uppercase fs-5   fw-bold m-0 mt-4">
             Connexion
           </h1>
           {error && (
@@ -131,10 +137,42 @@ const LoginPage: React.FC = () => {
           </div>
           <div className="text-center">
             <span>Vous n'avez pas de compte ?</span> <br />
-            <span className="text-primary fw-bold" onClick={e =>{
-              e.preventDefault()
-              history.push('register')
-            }}>Inscrivez-vous ici</span>
+            <span
+              className="text-primary fw-bold"
+              onClick={(e) => {
+                e.preventDefault();
+                history.push("register");
+              }}
+            >
+              Inscrivez-vous ici
+            </span>
+          </div>
+          <div>
+            <div className="text-center my-1 text-12 fw-bold">
+              Nos Partenaires
+            </div>
+            <div className="d-flex flex-wrap justify-content-center mt-2">
+              <img
+                className="border border-gray mb-1 mx-2"
+                width={"54px"}
+                src={enumera}
+              />
+              <img
+                className="border border-gray mb-1 mx-2"
+                width={"54px"}
+                src={sos}
+              />
+              <img
+                className="border border-gray mb-1 mx-2"
+                width={"54px"}
+                src={kamalpha}
+              />
+              <img
+                className="border border-gray mb-1 mx-2"
+                width={"54px"}
+                src={armories}
+              />
+            </div>
           </div>
         </Container>
       </IonContent>

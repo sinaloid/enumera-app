@@ -14,24 +14,25 @@ interface ContainerProps {
   data: any;
   isActive: boolean;
   modal: any;
-  setDatas: any;
-  setLoaded:any
+  setLoaded: any;
+  onChange: any;
 }
 
 const Classe: React.FC<ContainerProps> = ({
   data,
   isActive,
   modal,
-  setDatas,
-  setLoaded
+  setLoaded,
+  onChange,
 }) => {
   const { updateDataShared } = useFunction();
   const { get } = useRequest();
 
   const getMatiereOnClasseChange = (data: any) => {
     //get(endPoint.matieres + "/classe/" + data.slug, setDatas, setLoaded);
-    const periode = localStorage.getItem('periode')
-    get(endPoint.matieres+"/classe/"+data.slug+"/periode/"+periode, setDatas, setLoaded);
+    const periode = localStorage.getItem("periode");
+    //onChange(endPoint.matieres+"/classe/"+data.slug+"/periode/"+periode, setDatas, setLoaded);
+    onChange(data.slug, periode);
   };
 
   return (
@@ -40,7 +41,7 @@ const Classe: React.FC<ContainerProps> = ({
       onClick={(e: any) => {
         e.preventDefault();
         updateDataShared("classe", data);
-        setLoaded(false)
+        setLoaded(false);
         getMatiereOnClasseChange(data);
         modal.current?.dismiss();
       }}

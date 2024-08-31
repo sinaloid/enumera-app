@@ -5,6 +5,7 @@
   --font-size-subtitle-1: 0.875rem;
   --font-size-subtitle-2: 0.75rem;
   --font-size-body: 1rem;
+  --secondary-color:"#ff5f00"
 }
 
 .title-1 {
@@ -30,7 +31,7 @@
 }
 
 .text-secondary {
-  color: #cd5c08 !important;
+  color: #ff5f00 !important;
 }
 
 

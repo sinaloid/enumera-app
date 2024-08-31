@@ -42,6 +42,8 @@ import { endPoint } from "../../services";
 import { useParams } from "react-router";
 import "./Evaluation.css";
 import useRequestEvaluation from "./hooks/useRequest";
+import { Retour } from "../../components/Retour";
+import { ContentHeader } from "../../components/ContentHeader";
 const Evaluation = () => {
   const { user } = useAuth();
   const [section, setSection] = useState(0);
@@ -104,9 +106,12 @@ const Evaluation = () => {
     setCurrentChoix("");
   };
 
-  const goToResult = (e:any) => {
-    localStorage.setItem('point',""+point+"/"+datas.question_lecons.length)
-    navigate(e,'resultat','replace')
+  const goToResult = (e: any) => {
+    localStorage.setItem(
+      "point",
+      "" + point + "/" + datas.question_lecons.length
+    );
+    navigate(e, "resultat", "replace");
   };
 
   const mediaConfig = () => {
@@ -131,39 +136,12 @@ const Evaluation = () => {
   };
   return (
     <IonPage>
-      <IonHeader>
-        <Container>
-          <IonToolbar>
-            <IonButtons slot="start">
-              <div className="d-flex align-items-center">
-                <img
-                  className="rounded-5"
-                  width={"48px"}
-                  src="https://picsum.photos/400/?random"
-                />
-                <div className="ms-2 line-height">
-                  <div className="fw-bold text-uppercase text-14 line-height">
-                    {user?.nom + " " + user?.prenom}
-                  </div>
-                  <div className="text-12 text-muted">12/05/2024</div>
-                </div>
-              </div>
-            </IonButtons>
-            {/** */}
-            <IonTitle></IonTitle>
-            <IonButtons slot="end">
-              <IonButton className="back-circle">
-                <IonIcon
-                  color="medium"
-                  className="text-24"
-                  icon={notifications}
-                />
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </Container>
-      </IonHeader>
+      <ContentHeader idPopover={"exerciceLecon"} />
       <IonContent>
+        <div className="p-2">
+          <Retour />
+        </div>
+
         <Container>
           <div className="container-fluid">
             <div>

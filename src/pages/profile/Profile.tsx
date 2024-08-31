@@ -12,6 +12,7 @@ import {
   IonListHeader,
   IonModal,
   IonPage,
+  IonPopover,
   IonRow,
   IonSelect,
   IonSelectOption,
@@ -20,81 +21,81 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { notifications, chevronDown, chevronForward } from "ionicons/icons";
-import { useEffect, useRef, useState } from "react";
 import {
-  ClasseSvg,
-  BookSvg,
-  SuccessSvg,
-  LessonSvg,
-  ExerciceSvg,
-  Container,
-  LinkList,
-} from "../../components";
+  notifications,
+  chevronDown,
+  chevronForward,
+  ellipsisVertical,
+} from "ionicons/icons";
+import React, { useEffect, useRef, useState } from "react";
+import { Container, LinkList } from "../../components";
+import ClasseSvg from "../../components/svg/ClasseSvg";
+import LessonSvg from "../../components/svg/LessonSvg";
+import SuccessSvg from "../../components/svg/SuccessSvg";
 import { useAuth, useDataProvider, useNavigate, useRequest } from "../../hooks";
 import { endPoint } from "../../services";
-import { useParams } from "react-router";
+import useRequestMatiere from "./hooks/useRequest";
 import useFunction from "../../hooks/useFunction";
-import { Retour } from "../../components/Retour";
+import ClassePeriodeSelect from "../../components/ClassePeriodeSelect";
 import { ContentHeader } from "../../components/ContentHeader";
 
-const Lecon = () => {
+const Profile = () => {
   const { user } = useAuth();
-  const [section, setSection] = useState(0);
   const [datas, setDatas] = useState<any>([]);
-  const [periodes, setPeriodes] = useState<any>([]);
-  const [classes, setClasses] = useState<any>([]);
   const { get } = useRequest();
+  const { getPeriodeClasse } = useRequestMatiere();
   const { navigate } = useNavigate();
   const modalPeriode = useRef<HTMLIonModalElement>(null);
   const modalClasse = useRef<HTMLIonModalElement>(null);
   const { dataShared }: any = useDataProvider();
-  const [matiere, setMatiere] = useState<any>("");
-  const [chapitre, setChapitre] = useState<any>("");
-  const { classeSlug, matiereSlug, periodeSlug, chapitreSlug }: any =
-    useParams();
   const [loaded, setLoaded] = useState(false);
+  const { logout } = useAuth();
+  const [isFirstTime, setIsFirstTime] = useState(true);
 
   useEffect(() => {
-    get(endPoint.lecons + `/classe/${classeSlug}/periode/${periodeSlug}/matiere/${matiereSlug}/chapitre/${chapitreSlug}`, setDatas, setLoaded);
-    get(endPoint.chapitres + `/${chapitreSlug}`, setChapitre, setLoaded);
-    get(endPoint.matieres + `/${matiereSlug}`, setMatiere, setLoaded);
+    const classe = localStorage.getItem("classe");
+    const periode = localStorage.getItem("periode");
+    if (user) {
+      get(
+        endPoint.matieres + "/classe/" + classe + "/periode/" + periode,
+        setDatas,
+        setLoaded
+      );
+    }
   }, [user]);
+
+  const deconnection = (e: any) => {
+    logout();
+    navigate(e, "connexion");
+  };
+
+  const callbackMatiere = (classe: string, periode: string) => {
+    get(
+      endPoint.matieres + "/classe/" + classe + "/periode/" + periode,
+      setDatas,
+      setLoaded
+    );
+  };
   return (
     <IonPage>
-      <ContentHeader idPopover={"lecon"} />
+      <ContentHeader idPopover={"profile"} />
+
       <IonContent>
         <Container>
           <div className="container-fluid">
-            <div className="row mt-2 text-14">
-            <div className="col-12 px-0">
-                <LinkList />
-              </div>
-              <div className="text-center fw-bold fs-5">
-                <div className="icon-circle bg-primary mx-auto d-flex align-items-center justify-content-center text-white">
-                {dataShared?.classe?.label}<br />
-                {" "+matiere?.abreviation}
-                </div>
-                <div className="my-2">
-                {chapitre?.label}
-                </div>
-              </div>
-              <div className="col-12 mt-2 text-14 py-2 text-center bg-gray">
-                Messages défilantes : Actualités et évènements
-              </div>
-            </div>
-          </div>
-          <div className="container-fluid">
-            <div className="row mt-2">
-            <div className="col-12 px-0">
+            <div className="row">
+              <ClassePeriodeSelect
+                onChange={callbackMatiere}
+                setLoaded={setLoaded}
+              />
+              <div className="col-12 px-0">
                 <LinkList />
               </div>
               <div className="col-12 text-center mt-2 mb-3">
                 <span className="bg-primary-light text-danger fw-bold px-3 py-2">
-                Liste des leçons
+                  Bilan de ma progression
                 </span>
               </div>
-              <Retour />
               {loaded &&
                 datas?.map((data: any) => {
                   return <Item data={data} key={data.slug} />;
@@ -103,6 +104,19 @@ const Lecon = () => {
             </div>
           </div>
         </Container>
+
+        <IonPopover trigger="popover-button" dismissOnSelect={true}>
+          <IonContent>
+            <IonList>
+              <IonItem button={true} detail={false}>
+                A propos
+              </IonItem>
+              <IonItem button={true} detail={false} onClick={deconnection}>
+                Se deconnecter
+              </IonItem>
+            </IonList>
+          </IonContent>
+        </IonPopover>
       </IonContent>
     </IonPage>
   );
@@ -153,39 +167,38 @@ interface ItemProps {
 }
 const Item: React.FC<ItemProps> = ({ data }) => {
   const { navigate } = useNavigate();
-  const { classeSlug, matiereSlug, periodeSlug, chapitreSlug }: any =
-    useParams();
+  const { dataShared }: any = useDataProvider();
   const { updateDataShared } = useFunction();
+
   return (
     <div
       className="col-12 px-0 bg-primary-light mb-3"
       onClick={(e) => {
         navigate(
           e,
-          `classes/${classeSlug}/periodes/${periodeSlug}/matieres/${matiereSlug}/chapitres/${chapitreSlug}/lecons/${data.slug}`
+          `classes/${dataShared?.classe?.slug}/periodes/${dataShared?.periode?.slug}/matieres/${data?.slug}/stats`
         );
-        updateDataShared("lecon", data);
+        updateDataShared("matiere", data.matiere);
       }}
     >
       <div className="d-flex">
         <div className="bg-primary rect-icon">
           <span className="text-white fw-bold text-uppercase">
-            <BookSvg />
+            {data.matiere?.abreviation}
           </span>
         </div>
         <div className="w-100 text-primary position-relative">
           <div className="d-flex align-items-center px-2">
-            <span className="fw-bold me-auto">{data.label}</span>
+            <span className="fw-bold me-auto">{data.matiere?.label}</span>
             <IonIcon icon={chevronForward} />
           </div>
-          <div className="d-flex px-2 mt-2">
-            <div className="border-start  text-center px-2 border-primary">
-              <LessonSvg /> <br />
-              <span>{[data.cours]?.length} Cours</span>
-            </div>
+          <div className="d-flex px-2 mt-3">
             <div className="border-start border-end text-center px-2 border-primary">
-              <ExerciceSvg /> <br />
-              <span>{data.evaluations_lecons?.length} Exercice</span>
+              <div className="text-start">
+                <LessonSvg />
+              </div>
+              <span>{"Moyenne : "}</span>
+              <span className="text-danger">{"en attende"}</span>
             </div>
           </div>
         </div>
@@ -194,4 +207,4 @@ const Item: React.FC<ItemProps> = ({ data }) => {
   );
 };
 
-export default Lecon;
+export default Profile;

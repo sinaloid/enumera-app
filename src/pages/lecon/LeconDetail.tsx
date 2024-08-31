@@ -36,6 +36,8 @@ import { endPoint } from "../../services";
 import { useParams } from "react-router";
 import useRequestLecon from "./hooks/useRequest";
 import useFunction from "../../hooks/useFunction";
+import { Retour } from "../../components/Retour";
+import { ContentHeader } from "../../components/ContentHeader";
 
 const Cours = () => {
   const { user } = useAuth();
@@ -57,40 +59,10 @@ const Cours = () => {
     get(endPoint.chapitres + `/${chapitreSlug}`, setChapitre, setLoaded);
     get(endPoint.matieres + `/${matiereSlug}`, setMatiere, setLoaded);
   }, [user]);
+  
   return (
     <IonPage>
-      <IonHeader>
-        <Container>
-          <IonToolbar>
-            <IonButtons slot="start">
-              <div className="d-flex align-items-center">
-                <img
-                  className="rounded-5"
-                  width={"48px"}
-                  src="https://picsum.photos/400/?random"
-                />
-                <div className="ms-2 line-height">
-                  <div className="fw-bold text-uppercase text-14 line-height">
-                    {user?.nom + " " + user?.prenom}
-                  </div>
-                  <div className="text-12 text-muted">12/05/2024</div>
-                </div>
-              </div>
-            </IonButtons>
-            {/** */}
-            <IonTitle></IonTitle>
-            <IonButtons slot="end">
-              <IonButton className="back-circle">
-                <IonIcon
-                  color="medium"
-                  className="text-24"
-                  icon={notifications}
-                />
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </Container>
-      </IonHeader>
+      <ContentHeader idPopover={"leconDetail"} />
       <IonContent>
         <Container>
           <div className="container-fluid">
@@ -116,6 +88,8 @@ const Cours = () => {
                 Cours et exercices
                 </span>
               </div>
+              
+              <Retour />
               {loaded && (
                 <>
                   {datas?.cours?.map((data: any) => {

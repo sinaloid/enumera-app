@@ -22,6 +22,7 @@ import { Matiere } from "../matiere";
 import { Evaluation } from "../evaluation";
 import CoursStats from "../stats/CoursStats";
 import EvaluationListe from "../evaluation/EvaluationListe";
+import Profile from "../profile/Profile";
 
 const TabsPage: React.FC = () => {
   const {user, isAuth} = useAuth()
@@ -44,7 +45,7 @@ const TabsPage: React.FC = () => {
           <EvaluationListe />
         </Route>
         <Route path="/tabs/compte">
-          <Tab3 />
+          <Profile />
         </Route>
         <Route exact path="/tabs">
           <Redirect to="/tabs/home" />
@@ -57,7 +58,7 @@ const TabsPage: React.FC = () => {
         </IonTabButton>
         <IonTabButton tab="lesson" href="/tabs/lesson">
           <LessonSvg />
-          <IonLabel>Classe virtuelle</IonLabel>
+          <IonLabel>Classe virt.</IonLabel>
         </IonTabButton>
         <IonTabButton tab="challenge" href="/tabs/evaluation">
           <ChallengeSvg />
@@ -68,6 +69,7 @@ const TabsPage: React.FC = () => {
           <IonLabel>Profile</IonLabel>
         </IonTabButton>
       </IonTabBar>
+      
     </IonTabs>
   );
 };

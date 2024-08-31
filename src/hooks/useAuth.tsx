@@ -1,4 +1,3 @@
-// AuthContext.tsx
 import React, {
   createContext,
   useState,
@@ -8,12 +7,15 @@ import React, {
 } from "react";
 
 interface User {
-  username: string;
+  nom: string;
+  prenom: string;
+  user: string;
+  token: string;
   // Ajoutez d'autres propriétés utilisateur selon vos besoins
 }
 
 interface AuthContextType {
-  user: any;
+  user: User | null;
   login: (userData: User) => void;
   logout: () => void;
   isAuth: () => boolean;
@@ -22,17 +24,17 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<any>(null);
-
-  useEffect(() => {
-    // Vous pouvez vérifier l'état d'authentification ici
+  const [user, setUser] = useState<User | null>(() => {
     const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
+    try {
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch (error) {
+      console.error("Invalid user data in localStorage");
+      return null;
     }
-  }, []);
+  });
 
-  const login = (userData: any) => {
+  const login = (userData: User) => {
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
   };
@@ -43,10 +45,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const isAuth = () => {
-    let savedUser : any = localStorage.getItem("user");
-    savedUser = JSON.parse(savedUser)
-    //setUser(savedUser)
-    return savedUser?.token !== undefined && savedUser?.token !== null && savedUser?.token !== "";
+    return user?.token !== undefined && user?.token !== "";
   };
 
   return (
@@ -58,7 +57,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;

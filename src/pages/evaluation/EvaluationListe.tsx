@@ -35,6 +35,8 @@ import { useAuth, useDataProvider, useNavigate, useRequest } from "../../hooks";
 import { endPoint } from "../../services";
 import { useParams } from "react-router";
 import useFunction from "../../hooks/useFunction";
+import ClassePeriodeSelect from "../../components/ClassePeriodeSelect";
+import { ContentHeader } from "../../components/ContentHeader";
 
 const EvaluationListe = () => {
   const { user } = useAuth();
@@ -57,91 +59,19 @@ const EvaluationListe = () => {
       setLoaded
     );
   }, [user]);
-
+  const callbackEvaluation = (classe: string) => {
+    get(endPoint.evaluations + `/classe/${classe}`, setDatas, setLoaded);
+  };
   return (
     <IonPage>
-      <IonHeader>
-        <Container>
-          <IonToolbar>
-            <IonButtons slot="start">
-              <div className="d-flex align-items-center">
-                <img
-                  className="rounded-5"
-                  width={"48px"}
-                  src="https://picsum.photos/400/?random"
-                />
-                <div className="ms-2 line-height">
-                  <div className="fw-bold text-uppercase text-14 line-height">
-                    {user?.nom + " " + user?.prenom}
-                  </div>
-                  <div className="text-12 text-muted">12/05/2024</div>
-                </div>
-              </div>
-            </IonButtons>
-            {/** */}
-            <IonTitle></IonTitle>
-            <IonButtons slot="end">
-              <IonButton className="back-circle">
-                <IonIcon
-                  color="medium"
-                  className="text-24"
-                  icon={notifications}
-                />
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </Container>
-      </IonHeader>
+      <ContentHeader idPopover={"evaluationList"} />
+
       <IonContent>
         <Container>
-          <div className="container-fluid">
-            <div className="row mt-2 text-14">
-              <div className="col-6 px-0 pe-1">
-                <div
-                  className="d-flex align-items-center text-primary p-1 bg-primary-light"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    modalClasse.current?.present();
-                  }}
-                >
-                  <div className="me-auto">
-                    <ClasseSvg /> <span>{dataShared?.classe?.label}</span>
-                  </div>
-                  <IonIcon icon={chevronDown} />
-                </div>
-              </div>
-              <div className="col-6 px-0 ps-1">
-                <div
-                  className="d-flex align-items-center text-primary p-1 bg-primary-light"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    modalPeriode.current?.present();
-                  }}
-                >
-                  <div className="me-auto">
-                    <ClasseSvg /> <span>{dataShared?.periode?.label}</span>
-                  </div>
-                  <IonIcon icon={chevronDown} />
-                </div>
-              </div>
-              <div className="col-12 px-0 mt-2 ">
-                <div className="d-flex align-items-center justify-content-center text-primary p-1 bg-gray">
-                  <div className="">
-                    <SuccessSvg />{" "}
-                    <span className="text-lowcase">
-                      Moyenne {dataShared.periode.label}:
-                      <span className="text-danger ps-2 fw-bold">
-                        En attente
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className="col-12 mt-2 text-14 py-2 text-center bg-gray">
-                Messages défilantes : Actualités et évènements
-              </div>
-            </div>
-          </div>
+          <ClassePeriodeSelect
+            onChange={callbackEvaluation}
+            setLoaded={setLoaded}
+          />
           <div className="container-fluid">
             <div className="row mt-2">
               <div className="col-12 px-0">
@@ -218,10 +148,7 @@ const Item: React.FC<ItemProps> = ({ data }) => {
     <div
       className="col-12 px-0 bg-primary-light mb-3"
       onClick={(e) => {
-        navigate(
-          e,
-          `evaluation/${data.slug}/question`
-        );
+        navigate(e, `evaluation/${data.slug}/question`);
       }}
     >
       <div className="d-flex">
@@ -234,15 +161,23 @@ const Item: React.FC<ItemProps> = ({ data }) => {
           <div className="d-flex align-items-center px-2">
             <div className="me-auto">
               <span className="fw-bold me-auto">{data.label}</span> <br />
-              <span className="fw-bold me-auto text-12">Date : <span className="text-danger fw-bold">{data.date}</span></span> <br />
-              <span className="fw-bold me-auto text-12">Heure de : <span className="text-danger fw-bold">{data.heure_debut} à {data.heure_fin}</span></span>
+              <span className="fw-bold me-auto text-12">
+                Date : <span className="text-danger fw-bold">{data.date}</span>
+              </span>{" "}
+              <br />
+              <span className="fw-bold me-auto text-12">
+                Heure de :{" "}
+                <span className="text-danger fw-bold">
+                  {data.heure_debut} à {data.heure_fin}
+                </span>
+              </span>
             </div>
             <IonIcon icon={chevronForward} />
           </div>
           <div className="d-flex px-2 mt-2">
             <div className="border-start border-end text-center px-2 border-primary">
-              <LessonSvg /> <br />
-              <span>{data.lecons?.length} Leçons</span>
+              <ExerciceSvg /> <br />
+              <span>{data.questions?.length} Questions</span>
             </div>
           </div>
         </div>

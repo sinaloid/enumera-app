@@ -22,11 +22,21 @@ import {
 } from "@ionic/react";
 import { notifications, chevronDown, chevronForward } from "ionicons/icons";
 import { useEffect, useRef, useState } from "react";
-import { ClasseSvg,BookSvg,SuccessSvg,LessonSvg, Container, LinkList } from "../../components";
+import {
+  ClasseSvg,
+  BookSvg,
+  SuccessSvg,
+  LessonSvg,
+  Container,
+  LinkList,
+} from "../../components";
 import { useAuth, useDataProvider, useNavigate, useRequest } from "../../hooks";
 import { endPoint } from "../../services";
 import { useParams } from "react-router";
 import useFunction from "../../hooks/useFunction";
+import ClassePeriodeSelect from "../../components/ClassePeriodeSelect";
+import { Retour } from "../../components/Retour";
+import { ContentHeader } from "../../components/ContentHeader";
 
 const Chapitre = () => {
   const { user } = useAuth();
@@ -44,7 +54,8 @@ const Chapitre = () => {
 
   useEffect(() => {
     get(
-      endPoint.chapitres + `/classe/${classeSlug}/periode/${periodeSlug}/matiere/${matiereSlug}`,
+      endPoint.chapitres +
+        `/classe/${classeSlug}/periode/${periodeSlug}/matiere/${matiereSlug}`,
       setDatas,
       setLoaded
     );
@@ -54,90 +65,23 @@ const Chapitre = () => {
     e.preventDefault();
     setSection(name);
   };
+  const callbackChapitre = (classeSlug: string, periodeSlug: string) => {
+    get(
+      endPoint.chapitres +
+        `/classe/${classeSlug}/periode/${periodeSlug}/matiere/${matiereSlug}`,
+      setDatas,
+      setLoaded
+    );
+  };
   return (
     <IonPage>
-      <IonHeader>
-        <Container>
-          <IonToolbar>
-            <IonButtons slot="start">
-              <div className="d-flex align-items-center">
-                <img
-                  className="rounded-5"
-                  width={"48px"}
-                  src="https://picsum.photos/400/?random"
-                />
-                <div className="ms-2 line-height">
-                  <div className="fw-bold text-uppercase text-14 line-height">
-                    {user?.nom + " " + user?.prenom}
-                  </div>
-                  <div className="text-12 text-muted">12/05/2024</div>
-                </div>
-              </div>
-            </IonButtons>
-            {/** */}
-            <IonTitle></IonTitle>
-            <IonButtons slot="end">
-              <IonButton className="back-circle">
-                <IonIcon
-                  color="medium"
-                  className="text-24"
-                  icon={notifications}
-                />
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </Container>
-      </IonHeader>
+      <ContentHeader idPopover={"chapitre"} />
       <IonContent>
         <Container>
-          <div className="container-fluid">
-            <div className="row mt-2 text-14">
-              <div className="col-6 px-0 pe-1">
-                <div
-                  className="d-flex align-items-center text-primary p-1 bg-primary-light"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    modalClasse.current?.present();
-                  }}
-                >
-                  <div className="me-auto">
-                    <ClasseSvg /> <span>{dataShared?.classe?.label}</span>
-                  </div>
-                  <IonIcon icon={chevronDown} />
-                </div>
-              </div>
-              <div className="col-6 px-0 ps-1">
-                <div
-                  className="d-flex align-items-center text-primary p-1 bg-primary-light"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    modalPeriode.current?.present();
-                  }}
-                >
-                  <div className="me-auto">
-                    <ClasseSvg /> <span>{dataShared?.periode?.label}</span>
-                  </div>
-                  <IonIcon icon={chevronDown} />
-                </div>
-              </div>
-              <div className="col-12 px-0 mt-2 ">
-                <div className="d-flex align-items-center justify-content-center text-primary p-1 bg-gray">
-                  <div className="">
-                    <SuccessSvg />{" "}
-                    <span className="text-lowcase">
-                      Moyenne {dataShared.periode.label}:
-                      <span className="text-danger ps-2 fw-bold">
-                        En attente
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className="col-12 mt-2 text-14 py-2 text-center bg-gray">
-                Messages défilantes : Actualités et évènements
-              </div>
-            </div>
-          </div>
+          <ClassePeriodeSelect
+            onChange={callbackChapitre}
+            setLoaded={setLoaded}
+          />
           <div className="container-fluid">
             <div className="row mt-2">
               <div className="col-12 px-0">
@@ -145,10 +89,10 @@ const Chapitre = () => {
               </div>
               <div className="col-12 text-center mt-2 mb-3">
                 <span className="bg-primary-light text-danger fw-bold px-3 py-2">
-                Liste des chapitres
+                  Liste des chapitres
                 </span>
               </div>
-              
+              <Retour />
               {loaded &&
                 datas?.map((data: any) => {
                   return <Item data={data} />;

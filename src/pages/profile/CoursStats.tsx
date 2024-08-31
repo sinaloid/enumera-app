@@ -36,10 +36,8 @@ import LessonSvg from "../../components/svg/LessonSvg";
 import SuccessSvg from "../../components/svg/SuccessSvg";
 import { useAuth, useDataProvider, useNavigate, useRequest } from "../../hooks";
 import { endPoint } from "../../services";
-import { Classe, Periode } from "./components";
 import useRequestMatiere from "./hooks/useRequest";
 import useFunction from "../../hooks/useFunction";
-import { ContentHeader } from "../../components/ContentHeader";
 
 const CoursStats = () => {
   const { user } = useAuth();
@@ -58,7 +56,7 @@ const CoursStats = () => {
 
   useEffect(() => {
     if (user) {
-      getPeriodeClasse(setPeriodes, setClasses);
+      //getPeriodeClasse(setPeriodes, setClasses);
       get(endPoint.matieres, setDatas, setLoaded);
     }
   }, [user]);
@@ -70,8 +68,45 @@ const CoursStats = () => {
 
   return (
     <IonPage>
-      <ContentHeader idPopover={"coursStats"} />
-
+      <IonHeader>
+        <Container>
+          <IonToolbar>
+            <IonButtons slot="start">
+              <div className="d-flex align-items-center">
+                <img
+                  className="rounded-5"
+                  width={"48px"}
+                  src="https://picsum.photos/400/?random"
+                />
+                <div className="ms-2 line-height">
+                  <div className="fw-bold text-uppercase text-14 line-height">
+                    {user?.nom + " " + user?.prenom}
+                  </div>
+                  <div className="text-12 text-muted">12/05/2024</div>
+                </div>
+              </div>
+            </IonButtons>
+            {/** */}
+            <IonTitle></IonTitle>
+            <IonButtons slot="end">
+              <IonButton className="back-circle">
+                <IonIcon
+                  color="medium"
+                  className="text-24"
+                  icon={notifications}
+                />
+              </IonButton>
+              <IonButton id="popover-button" className="back-circle">
+                <IonIcon
+                  color="medium"
+                  className="text-24"
+                  icon={ellipsisVertical}
+                />
+              </IonButton>
+            </IonButtons>
+          </IonToolbar>
+        </Container>
+      </IonHeader>
       <IonContent>
         <Container>
           <div className="container-fluid">
@@ -128,12 +163,10 @@ const CoursStats = () => {
                 <LinkList />
               </div>
               <div className="col-12 text-center mt-2 mb-3">
-                <span className="bg-primary-light text-danger fw-bold px-3 py-2">
-                  Classes virtuelles
-                </span>
+                Bilan de ma progression
               </div>
               {loaded &&
-                [].map((data: any) => {
+                datas?.map((data: any) => {
                   return <Item data={data} key={data.slug} />;
                 })}
               {!loaded && <Skeleton />}
@@ -141,48 +174,6 @@ const CoursStats = () => {
           </div>
         </Container>
 
-        <IonModal
-          ref={modalClasse}
-          initialBreakpoint={0.25}
-          breakpoints={[0, 0.25, 0.5, 0.75]}
-        >
-          <IonContent>
-            <Container>
-              <div className="my-2 text-center">Sélectionnez une classe</div>
-              {classes.map((data: any) => {
-                return (
-                  <Classe
-                    key={data.slug}
-                    data={data}
-                    isActive={dataShared?.classe?.slug === data.slug}
-                    modal={modalClasse}
-                  />
-                );
-              })}
-            </Container>
-          </IonContent>
-        </IonModal>
-        <IonModal
-          ref={modalPeriode}
-          initialBreakpoint={0.25}
-          breakpoints={[0, 0.25, 0.5, 0.75]}
-        >
-          <IonContent>
-            <Container>
-              <div className="my-2 text-center">Sélectionnez une periode</div>
-              {periodes.map((data: any) => {
-                return (
-                  <Periode
-                    key={data.slug}
-                    data={data}
-                    isActive={dataShared?.periode?.slug === data.slug}
-                    modal={modalPeriode}
-                  />
-                );
-              })}
-            </Container>
-          </IonContent>
-        </IonModal>
         <IonPopover trigger="popover-button" dismissOnSelect={true}>
           <IonContent>
             <IonList>

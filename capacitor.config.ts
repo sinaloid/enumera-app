@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'bf.enumera.ounoid',
-  appName: 'enumera',
+  appId: 'tech.enumera.wilofo',
+  appName: 'Wilofo',
   webDir: 'dist'
 };
 

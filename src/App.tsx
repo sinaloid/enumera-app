@@ -1,5 +1,13 @@
 import { Redirect, Route, useHistory } from "react-router-dom";
-import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
+import {
+  IonApp,
+  IonContent,
+  IonItem,
+  IonList,
+  IonPopover,
+  IonRouterOutlet,
+  setupIonicReact,
+} from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 
 /* Core CSS required for Ionic components to work properly */
@@ -38,11 +46,12 @@ import LoginPage from "./pages/auth/LoginPage";
 import { useAuth } from "./hooks";
 import { useEffect } from "react";
 import { Chapitre, Cours, Lecon, LeconDetail, Matiere } from "./pages";
-import { Evaluation,EvaluationLecon } from "./pages/evaluation";
+import { Evaluation, EvaluationLecon } from "./pages/evaluation";
 import CoursStatsDetail from "./pages/stats/CoursStatsDetail";
 import RegisterPage from "./pages/auth/RegisterPage";
 import VerifyOtpPage from "./pages/auth/VerifyOtpPage";
 import Resultat from "./pages/evaluation/Resultat";
+import StatsDetail from "./pages/profile/StatsDetail";
 
 setupIonicReact();
 
@@ -66,16 +75,10 @@ const App: React.FC = () => {
           <Route exact path="/verify-otp">
             <VerifyOtpPage />
           </Route>
-          <Route
-            exact
-            path="/evaluation/:evaluationSlug/question"
-          >
+          <Route exact path="/evaluation/:evaluationSlug/question">
             <Evaluation />
           </Route>
-          <Route
-            exact
-            path="/resultat"
-          >
+          <Route exact path="/resultat">
             <Resultat />
           </Route>
           <Route
@@ -88,7 +91,7 @@ const App: React.FC = () => {
             exact
             path="/classes/:classeSlug/periodes/:periodeSlug/matieres/:matiereSlug/stats"
           >
-            <CoursStatsDetail />
+            <StatsDetail />
           </Route>
           <Route
             exact
