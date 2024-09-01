@@ -56,8 +56,8 @@ const LoginPage: React.FC = () => {
   const formik = useFormik({
     validationSchema: validateData,
     initialValues: {
-      user: "ounoid@gmail.com",
-      password: "12345678",
+      user: "",
+      password: "",
     },
     onSubmit: (values) => {
       handleLogout();

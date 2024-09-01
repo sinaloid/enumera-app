@@ -36,7 +36,7 @@ const WelcomePage: React.FC = () => {
             />
           </div>
           <h1 className="text-center ion-text-uppercase title-3 my-3 fw-bold">
-            Bienvenue dans ENUMERA
+            Bienvenue dans WIlofo
           </h1>
 
           <div className="d-flex ion-justify-content-center mb-3">

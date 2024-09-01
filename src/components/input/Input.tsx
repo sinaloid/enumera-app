@@ -75,6 +75,7 @@ const Input: React.FC<ContainerProps> = ({
               //value={formik.values[name]} // Liaison de la valeur à Formik
               onIonChange={(e) => formik.setFieldValue(name, e.detail.value)} // Mise à jour de Formik à chaque changement de date
               //displayFormat="DD/MM/YYYY"
+              value={"2009-01-01"}
             />
             <div className="d-flex justify-content-center">
               <IonButton
