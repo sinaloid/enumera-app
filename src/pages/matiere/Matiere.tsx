@@ -59,12 +59,12 @@ const Matiere = () => {
     const periode = localStorage.getItem("periode");
     if (user) {
       get(
-        endPoint.matieres + "/classe/" + classe + "/periode/" + periode,
+        endPoint.matieres + "/classe/" + dataShared.classe?.slug + "/periode/" + dataShared.periode?.slug,
         setDatas,
         setLoaded
       );
     }
-  }, [user]);
+  }, [user,dataShared]);
 
   
 
