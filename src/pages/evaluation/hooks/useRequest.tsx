@@ -74,10 +74,23 @@ const useRequestEvaluation = () => {
       });
   };
 
+  const sendUserReponse = ( endPoint:any, datas: any, callback : any = () => {}, setLoaded : any = () => {}) => {
+    request
+      .post(endPoint,datas, headers)
+      .then((res: any) => {
+        console.log(res.data)
+        callback()
+        setLoaded(true)
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  };
   return {
     get,
     getEvaluation,
-    getEvaluationTest
+    getEvaluationTest,
+    sendUserReponse
   };
 };
 
