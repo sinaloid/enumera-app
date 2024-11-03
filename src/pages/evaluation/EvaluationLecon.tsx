@@ -47,6 +47,7 @@ const EvaluationLecon = () => {
       setLoaded
     );
     sessionStorage.removeItem("user_response");
+    sessionStorage.setItem("user_point", "0");
   }, [user]);
 
   useEffect(() => {
@@ -127,13 +128,17 @@ const EvaluationLecon = () => {
   const verifyReponseSaisie = () => {
     console.log("Reponse saisie");
     console.log(currentChoix);
-    if (
-      currentChoix.length !== 0 &&
-      questions.reponses.includes(currentChoix)
-    ) {
-      const pointActuel = point + parseInt(questions.point);
-      setPoint(pointActuel);
-      sessionStorage.setItem("user_point", questions.point);
+    console.log(questions.choix.includes(currentChoix));
+    console.log(questions.choix);
+    if (currentChoix.length !== 0) {
+      const inclus = questions.choix.some(
+        (item: any) => item.toLowerCase() === currentChoix[0].toLowerCase()
+      );
+      if (inclus) {
+        const pointActuel = point + parseInt(questions.point);
+        setPoint(pointActuel);
+        sessionStorage.setItem("user_point", questions.point);
+      }
     }
   };
 
