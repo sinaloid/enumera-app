@@ -20,7 +20,7 @@ export const Option : React.FC <Props> = ({idPopover}) => {
 
   const deconnection = (e: any) => {
     logout();
-    navigate(e, "connexion");
+    navigate(e, "login");
   };
 
   return (

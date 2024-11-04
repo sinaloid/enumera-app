@@ -2,12 +2,14 @@ import { IonHeader, IonToolbar, IonButtons, IonTitle } from "@ionic/react";
 import Container from "./Container";
 import { useAuth } from "../hooks";
 import { Option } from "./Option";
+import { BASE_URL } from "../services/request";
+import logo from "../assets/images/logo.png";
 
 interface PropsHeader {
     idPopover:any
 }
 export const ContentHeader : React.FC<PropsHeader> = ({idPopover}) => {
-  const { user } = useAuth();
+  const { user } :any = useAuth();
 
   return (
     <IonHeader>
@@ -18,7 +20,7 @@ export const ContentHeader : React.FC<PropsHeader> = ({idPopover}) => {
               <img
                 className="rounded-5"
                 width={"48px"}
-                src="https://picsum.photos/400/?random"
+                src={user?.image ? BASE_URL+user?.image : logo}
               />
               <div className="ms-2 line-height">
                 <div className="fw-bold text-uppercase text-14 line-height">

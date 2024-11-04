@@ -59,7 +59,7 @@ const Cours = () => {
     get(endPoint.chapitres + `/${chapitreSlug}`, setChapitre, setLoaded);
     get(endPoint.matieres + `/${matiereSlug}`, setMatiere, setLoaded);
   }, [user]);
-  
+
   return (
     <IonPage>
       <ContentHeader idPopover={"leconDetail"} />
@@ -69,26 +69,28 @@ const Cours = () => {
             <div className="row mt-2 text-14">
               <div className="text-center fs-5">
                 <div className="icon-circle bg-primary mx-auto d-flex align-items-center justify-content-center text-white">
-                {dataShared?.classe?.label}<br />
-                {" "+matiere?.abreviation}
+                  {dataShared?.classe?.label}
+                  <br />
+                  {" " + matiere?.abreviation}
                 </div>
                 <div className="my-2 text-14 fw-bold">{chapitre?.label}</div>
-                <div className="my-2 fw-bold">{datas?.lecon?.label.split(":")[1]}</div>
+                <div className="my-2 fw-bold">
+                  {datas?.lecon?.label.split(":")[1]}
+                </div>
               </div>
-              
             </div>
           </div>
           <div className="container-fluid">
             <div className="row mt-2">
-            <div className="col-12 px-0">
+              <div className="col-12 px-0">
                 <LinkList />
               </div>
               <div className="col-12 text-center mt-2 mb-3">
                 <span className="bg-primary-light text-danger fw-bold px-3 py-2">
-                Cours et exercices
+                  Cours et exercices
                 </span>
               </div>
-              
+
               <Retour />
               {loaded && (
                 <>
@@ -114,7 +116,7 @@ const Skeleton = () => {
     <>
       {[...Array(10)].map((data, idx) => {
         return (
-          <div className="row px-0" key={idx+data}>
+          <div className="row px-0" key={idx + data}>
             <IonList className="px-0">
               <IonItem>
                 <IonThumbnail slot="start">
@@ -177,14 +179,14 @@ const Item: React.FC<ItemProps> = ({ data }) => {
         <div className="w-100 text-primary position-relative">
           <div className="d-flex align-items-center px-2">
             <span className="fw-bold me-auto">
-               {data?.label?.split(":")[1]}
+              {data?.label?.split(":")[1]}
             </span>
             <IonIcon icon={chevronForward} />
           </div>
           <div className="d-flex px-2 mt-2">
             <div className="border-start border-end text-center px-2 border-primary">
               <LessonSvg /> <br />
-              <span>0 Cours</span>
+              <span>1 Cours</span>
             </div>
           </div>
         </div>
@@ -217,15 +219,22 @@ const ItemEvaluation: React.FC<ItemProps> = ({ data }) => {
         </div>
         <div className="w-100 text-primary position-relative">
           <div className="d-flex align-items-center px-2">
-            <span className="fw-bold me-auto">
-              {data?.label}
-            </span>
+            <span className="fw-bold me-auto">{data?.label}</span>
             <IonIcon icon={chevronForward} />
           </div>
           <div className="d-flex px-2 mt-2">
             <div className="border-start border-end text-center px-2 border-primary">
               <ExerciceSvg /> <br />
               <span>{data.question_lecons?.length} questions</span>
+            </div>
+            <div className="d-flex ms-auto align-items-end">
+              <span>
+                {data.evaluation_lecon_reponse_eleves?.length
+                  ? data.evaluation_lecon_reponse_eleves[
+                      data.evaluation_lecon_reponse_eleves?.length - 1
+                    ]?.point_obtenu + " pts"
+                  : "Pas encore fait"}{" "}
+              </span>
             </div>
           </div>
         </div>
