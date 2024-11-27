@@ -15,6 +15,7 @@ import {
   radioButtonOffOutline,
   squareOutline,
   checkboxOutline,
+  documentAttach,
 } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import { Container } from "../../components";
@@ -25,6 +26,7 @@ import "./Evaluation.css";
 import useRequestEvaluation from "./hooks/useRequest";
 import { Retour } from "../../components/Retour";
 import { ContentHeader } from "../../components/ContentHeader";
+import TimerWithVisibility from "../../components/TimerWithVisibility";
 
 const EvaluationLecon = () => {
   const { user } = useAuth();
@@ -47,6 +49,7 @@ const EvaluationLecon = () => {
       setLoaded
     );
     sessionStorage.removeItem("user_response");
+    sessionStorage.removeItem("quotient");
     sessionStorage.setItem("user_point", "0");
   }, [user]);
 
@@ -62,6 +65,8 @@ const EvaluationLecon = () => {
 
   const sendReponse = (e: any) => {
     e.preventDefault();
+    // window.scrollTo({ top: 0, behavior: "smooth" });
+    //console.log("scrollTo");
     if (questions.type.includes("REPONSE_SAISIE")) {
       verifyReponseSaisie();
     } else {
@@ -121,6 +126,12 @@ const EvaluationLecon = () => {
         const pointActuel = point + parseInt(questions.point);
         setPoint(pointActuel);
         sessionStorage.setItem("user_point", questions.point);
+        sessionStorage.setItem("point", "" + pointActuel);
+
+        let oldQuotient: any = sessionStorage.getItem("quotient");
+        oldQuotient = oldQuotient ? oldQuotient : 0;
+        const quotient = parseInt(oldQuotient) + parseInt(questions.point);
+        sessionStorage.setItem("quotient", "" + quotient);
       }
     }
   };
@@ -138,6 +149,12 @@ const EvaluationLecon = () => {
         const pointActuel = point + parseInt(questions.point);
         setPoint(pointActuel);
         sessionStorage.setItem("user_point", questions.point);
+        sessionStorage.setItem("point", "" + pointActuel);
+
+        let oldQuotient: any = sessionStorage.getItem("quotient");
+        oldQuotient = oldQuotient ? oldQuotient : 0;
+        const quotient = parseInt(oldQuotient) + parseInt(questions.point);
+        sessionStorage.setItem("quotient", "" + quotient);
       }
     }
   };
@@ -176,6 +193,9 @@ const EvaluationLecon = () => {
               {loaded && (
                 <>
                   <div className="fw-bold text-center fs-5">{datas?.label}</div>
+                  <div className="d-flex justify-content-center text-primary">
+                    <TimerWithVisibility />
+                  </div>
                   <div className="row mt-2">
                     <div className="d-flex align-items-center w-100">
                       <div className="me-auto">
@@ -209,41 +229,43 @@ const EvaluationLecon = () => {
                       </div>
                     </div>
                   </div>
-                  <Question questions={questions} />
+                  <Question questions={questions} enonce={datas?.enonce} />
 
                   <div className="container-fluid mt-4">
-                    {questions.type === "CHOIX_SIMPLE" && (
+                    {questions?.type === "CHOIX_SIMPLE" && (
                       <ChoixSimple
                         questions={questions}
                         choix={{ currentChoix, setCurrentChoix }}
                       />
                     )}
-                    {questions.type === "CHOIX_MULTIPLE" && (
+                    {questions?.type === "CHOIX_MULTIPLE" && (
                       <ChoixMultiple
                         questions={questions}
                         choix={{ currentChoix, setCurrentChoix }}
                       />
                     )}
-                    {questions.type === "REPONSE_SAISIE" && (
+                    {questions?.type === "REPONSE_SAISIE" && (
                       <ReponseSaisie
                         questions={questions}
                         choix={{ currentChoix, setCurrentChoix }}
                       />
                     )}
 
-                    {questions.type === "CHOIX_SIMPLE_IMAGE" && (
+                    {questions?.type === "CHOIX_SIMPLE_IMAGE" && (
                       <ChoixSimpleImage
                         questions={questions}
                         choix={{ currentChoix, setCurrentChoix }}
                       />
                     )}
 
-                    {questions.type === "CHOIX_MULTIPLE_IMAGE" && (
+                    {questions?.type === "CHOIX_MULTIPLE_IMAGE" && (
                       <ChoixMultipleImage
                         questions={questions}
                         choix={{ currentChoix, setCurrentChoix }}
                       />
                     )}
+
+                    <UploadFile />
 
                     <div className="d-flex justify-content-center mt-3">
                       {questionIndex + 1 <= datas.question_lecons?.length && (
@@ -290,12 +312,25 @@ const EvaluationLecon = () => {
 interface DataQuestion {
   questions: any;
   choix?: any;
+  enonce?: any;
 }
 
-const Question: React.FC<DataQuestion> = ({ questions, choix }) => {
+const Question: React.FC<DataQuestion> = ({ questions, enonce }) => {
   return (
     <div className="row bg-gray question rounded-3 mb-3">
-      <div className="col-12 p-2 fw-bold">{questions?.question}</div>
+      {enonce && (
+        <div
+          className="col-12 p-2 fw-bold text-center fs-4"
+          dangerouslySetInnerHTML={{ __html: enonce }}
+        />
+      )}
+      <div
+        className={`col-12 p-2 fw-bold fs-3 text-center ${
+          enonce && " px-4 text-primary"
+        }`}
+      >
+        {questions?.question}
+      </div>
     </div>
   );
 };
@@ -306,28 +341,27 @@ const ChoixSimple: React.FC<DataQuestion> = ({ questions, choix }) => {
     <div className="row">
       {questions?.choix?.map((data: any, idx: any) => {
         return (
-          <div key={idx + "choixsimple"}>
-            <div
-              className={`d-flex bg-gray mb-3 d-flex px-0 border ${
-                currentChoix.includes(idx + 1) && " border-primary"
-              }`}
-              role="presentation"
-              onClick={(e) => {
-                e.preventDefault();
-                setCurrentChoix([idx + 1]);
-              }}
-            >
-              <div className="d-flex align-items-center justify-content-center text-white bg-primary rec-num-size">
-                {idx + 1}
-              </div>
-              <div className="p-2 ">{data}</div>
-              <div className="ms-auto text-primary d-flex align-items-center px-1">
-                {currentChoix.includes(idx + 1) ? (
-                  <IonIcon icon={radioButtonOnOutline} />
-                ) : (
-                  <IonIcon icon={radioButtonOffOutline} />
-                )}
-              </div>
+          <div
+            key={idx + "choixsimple"}
+            className={`d-flex bg-gray mb-3 d-flex px-0 border ${
+              currentChoix.includes(idx + 1) && " border-primary"
+            }`}
+            role="presentation"
+            onClick={(e) => {
+              e.preventDefault();
+              setCurrentChoix([idx + 1]);
+            }}
+          >
+            <div className="d-flex align-items-center justify-content-center text-white bg-primary rec-num-size">
+              {idx + 1}
+            </div>
+            <div className="p-2 ">{data}</div>
+            <div className="ms-auto text-primary d-flex align-items-center px-1">
+              {currentChoix.includes(idx + 1) ? (
+                <IonIcon icon={radioButtonOnOutline} />
+              ) : (
+                <IonIcon icon={radioButtonOffOutline} />
+              )}
             </div>
           </div>
         );
@@ -392,10 +426,11 @@ const ReponseSaisie: React.FC<DataQuestion> = ({ questions, choix }) => {
           fill="outline"
           //maxlength={20}
           autoGrow={true}
+          value={currentChoix}
           onIonChange={(e) => {
             setCurrentChoix([e.detail.value]);
           }}
-          rows={6}
+          rows={1}
           //counterFormatter={(inputLength, maxLength) => `${maxLength - inputLength} characters remaining`}
         ></IonTextarea>
       </div>
@@ -493,6 +528,30 @@ const ChoixMultipleImage: React.FC<DataQuestion> = ({ questions, choix }) => {
             </div>
           );
         })}
+      </div>
+    </div>
+  );
+};
+
+
+
+const UploadFile = () => {
+  return (
+    <div className="row">
+      <div
+        className={`d-flex bg-gray mb-3 d-flex px-0 border`}
+        role="presentation"
+        onClick={(e) => {}}
+      >
+        <div className="d-flex align-items-center justify-content-center text-white bg-primary rec-num-size1 px-4">
+          Joindre un fichier
+        </div>
+        <div className="p-2 text-danger fw-bold ">
+          Vous devez joindre un fichier en complément de votre réponse
+        </div>
+        <div className="ms-auto text-primary d-flex align-items-center px-1">
+          <IonIcon icon={documentAttach} />
+        </div>
       </div>
     </div>
   );

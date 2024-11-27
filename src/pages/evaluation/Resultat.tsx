@@ -50,6 +50,7 @@ const Resultat = () => {
   const { classeSlug, matiereSlug, periodeSlug }: any = useParams();
   const [loaded, setLoaded] = useState(false);
   const history = useHistory();
+  const [pourcentage, setPourcentage] : any= useState(0);
 
   useEffect(() => {
     get(
@@ -58,11 +59,31 @@ const Resultat = () => {
       setDatas,
       setLoaded
     );
+
+    let point: any = sessionStorage.getItem("point");
+    let quotient: any = sessionStorage.getItem("quotient");
+
+    const result = (parseInt(point) * 100) / parseInt(quotient);
+    setPourcentage(result);
   }, [user]);
 
   const changeSection = (e: any, name: any) => {
     e.preventDefault();
     setSection(name);
+  };
+
+  const getMessage = (score: any) => {
+    if (score < 50) {
+      return <span className="text-danger">Tu peux mieux faire. Révise la leçon attentivement avant de retenter l'exercice.</span>;
+    } else if (score === 50) {
+      return <span className="text-success">C’est bien, mais il y a encore des points à améliorer. Reprends l’exercice pour progresser.</span>;
+    } else if (score > 50 && score < 75) {
+      return <span className="text-success">Bon travail ! Continue à t’entraîner pour atteindre un niveau encore meilleur.</span>;
+    } else if (score >= 75 && score < 100) {
+      return "Très bien ! Tu es sur la bonne voie, mais il reste encore un peu de marge pour t’améliorer.";
+    } else if (score === 100) {
+      return "Excellent ! Bravo à toi, continue comme ça pour maintenir ce niveau !";
+    }
   };
 
   return (
@@ -109,27 +130,28 @@ const Resultat = () => {
               <div className="d-flex justify-content-center">
                 <ResultatSvg />
               </div>
-              <div className="fw-bold fs-1 text-uppercase text-center text-primary mt-5 mb-3">
-                Bravo
+              <div className="fw-bold fs-5 text-uppercase text-center text-primary mt-5 mb-3">
+                {getMessage(pourcentage)}
               </div>
-              <div className="text-center">vous avez obtenu une note de</div>
+              <div className="text-center">vous avez obtenu une note de <span className="text-primary fw-bold">{parseInt(pourcentage) + "%"}</span></div>
               <div className="fw-bold fs-1 text-uppercase text-center text-primary mt-3 mb-3">
-                {localStorage.getItem('point')}
+                {sessionStorage.getItem("point")}/
+                {sessionStorage.getItem("quotient")}
               </div>
               <div className="text-center text-primary fw-bold">
                 Voir les corrections
               </div>
               <div className="d-flex justify-content-center mt-5">
-              <IonButton
-                className="w-75"
-                shape="round"
-                onClick={(e) => {
-                  e.preventDefault()
-                  history.goBack();
-                }}
-              >
-                Retour
-              </IonButton>
+                <IonButton
+                  className="w-75"
+                  shape="round"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    history.goBack();
+                  }}
+                >
+                  Retour
+                </IonButton>
               </div>
             </div>
           </div>

@@ -36,6 +36,7 @@ import { endPoint } from "../../services";
 import { useParams } from "react-router";
 import ZoomableIframe from "./ZoomableIframe";
 import { ContentHeader } from "../../components/ContentHeader";
+import TimerWithVisibility from "../../components/TimerWithVisibility";
 
 const Lecon = () => {
   const { user } = useAuth();
@@ -108,6 +109,9 @@ const Lecon = () => {
                 <div className="my-2 text-12 fw-bold">{chapitre?.label}</div>
                 <div className="my-2 fw-bold text-14">{lecon?.label}</div>
               </div>
+              <div className="d-flex justify-content-center text-primary">
+                <TimerWithVisibility />
+              </div>
               {/**
                * <div className="col-12 mt-2 text-14 py-2 text-center bg-gray">
                 Messages défilantes : Actualités et évènements
@@ -120,7 +124,7 @@ const Lecon = () => {
               <div className="col-12 px-0">
                 <LinkList />
               </div>
-              
+
               {loaded && (
                 <>
                   {/**
