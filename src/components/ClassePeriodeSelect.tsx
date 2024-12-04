@@ -1,11 +1,12 @@
 import { IonIcon, IonModal, IonContent } from "@ionic/react";
 import { chevronDown } from "ionicons/icons";
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useAuth, useRequest, useNavigate, useDataProvider } from "../hooks";
 import { Classe, Periode } from "../pages/matiere/components";
 import useRequestMatiere from "../pages/matiere/hooks/useRequest";
 import Container from "./Container";
 import { ClasseSvg, SuccessSvg } from "./svg";
+import { endPoint, request } from "../services";
 
 interface ContainerProps {
     onChange: any;
@@ -18,14 +19,26 @@ interface ContainerProps {
     const [periodes, setPeriodes] = useState<any>([]);
     const [classes, setClasses] = useState<any>([]);
     const { getPeriodeClasse } = useRequestMatiere();
+    const {get} = useRequest()
     const modalPeriode = useRef<HTMLIonModalElement>(null);
     const modalClasse = useRef<HTMLIonModalElement>(null);
     const { dataShared }: any = useDataProvider();
     const [isFirstTime, setIsFirstTime] = useState(true);
+    const [messages, setMessages] = useState([])
   
     useEffect(() => {
       getPeriodeClasse(setPeriodes, setClasses, isFirstTime, setIsFirstTime);
+      get(endPoint.messagesDefilants, setMessages, () => {})
     }, []);
+
+    const getMessage = () => {
+      request.get(endPoint.messagesDefilants).then((res) => {
+        console.log(res.data)
+        setMessages(res.data)
+      }).catch((error) => {
+        console.log(error)
+      })
+    }
     
     return (
       <>
@@ -70,8 +83,10 @@ interface ContainerProps {
                 </div>
               </div>
             </div>
-            <div className="col-12 mt-2 text-14 py-2 text-center bg-gray">
-              Messages défilantes : Actualités et évènements
+            <div className="col-12 mt-2 text-14 py-2 text-center bg-gray ">
+              <div className="marquee-rtl">
+              <div><ScrollingMessages messages={messages} /></div>
+              </div>
             </div>
           </div>
         </div>
@@ -122,6 +137,23 @@ interface ContainerProps {
           </IonContent>
         </IonModal>
       </>
+    );
+  };
+
+  interface Props {
+    messages : any
+  }
+  const ScrollingMessages : React.FC<Props> = ({ messages}) => {
+    return (
+      <div className="scrolling-container">
+        <div className="scrolling-messages">
+          {messages.map((message : any, index : any) => (
+            <span key={index} className="scrolling-message">
+              {message.contenu}
+            </span>
+          ))}
+        </div>
+      </div>
     );
   };
 

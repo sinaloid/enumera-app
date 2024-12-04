@@ -188,8 +188,18 @@ const Item: React.FC<ItemProps> = ({ data }) => {
               <LessonSvg /> <br />
               <span>1 Cours</span>
             </div>
+            <div className="d-flex ms-auto align-items-end">
+              <span>
+                {data.evaluation_lecon_reponse_eleves?.length
+                  ? data.evaluation_lecon_reponse_eleves[
+                      data.evaluation_lecon_reponse_eleves?.length - 1
+                    ]?.point_obtenu + " pts"
+                  : "Pas encore lu"}{" "}
+              </span>
+            </div>
           </div>
         </div>
+        
       </div>
     </div>
   );
@@ -200,9 +210,21 @@ const ItemEvaluation: React.FC<ItemProps> = ({ data }) => {
   const { classeSlug, matiereSlug, periodeSlug, chapitreSlug, leconSlug }: any =
     useParams();
   const { updateDataShared } = useFunction();
+  const [pointObtenu, setPointObtenu] = useState("");
+
+  useEffect(() => {
+    if (data.evaluation_lecon_reponse_eleves?.length) {
+      let pt =
+        data.evaluation_lecon_reponse_eleves[
+          data.evaluation_lecon_reponse_eleves?.length - 1
+        ]?.point_obtenu;
+
+      setPointObtenu(pt);
+    }
+  }, []);
   return (
     <div
-      className="col-12 px-0 bg-secondary-light bg-warning mb-3"
+      className={`col-12 px-0 mb-3 ${pointObtenu ? " bg-gray" : "bg-secondary-light"}`}
       onClick={(e) => {
         navigate(
           e,
@@ -212,8 +234,8 @@ const ItemEvaluation: React.FC<ItemProps> = ({ data }) => {
       }}
     >
       <div className="d-flex">
-        <div className="bg-secondary rect-icon">
-          <span className="text-white fw-bold text-uppercase">
+        <div className={`${pointObtenu ? "bg-primary-light text-primary " : " bg-secondary text-white"} rect-icon`}>
+          <span className="fw-bold text-uppercase">
             <ExerciceSvg />
           </span>
         </div>

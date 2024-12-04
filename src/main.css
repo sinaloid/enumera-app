@@ -109,6 +109,10 @@ ion-input > ion-button > button{
   background-color: #f2f2f2!important;
 }
 
+.bg-success-light {
+  background-color: #8FD14F !important;
+}
+
 .rect-icon{
   display: flex;
   align-items: center;
@@ -129,3 +133,36 @@ ion-input > ion-button > button{
 }
 
 
+
+/*****************/
+.scrolling-container {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 10px;
+  position: relative;
+}
+
+.scrolling-messages {
+  display: inline-block;
+  animation: scroll 30s linear infinite;
+}
+
+.scrolling-message {
+  margin-right: 50px; /* Espacement entre les messages */
+  font-size: 16px;
+  color: #333;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.scrolling-container:hover .scrolling-messages {
+  animation-play-state: paused;
+}

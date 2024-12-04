@@ -50,7 +50,8 @@ const Resultat = () => {
   const { classeSlug, matiereSlug, periodeSlug }: any = useParams();
   const [loaded, setLoaded] = useState(false);
   const history = useHistory();
-  const [pourcentage, setPourcentage] : any= useState(0);
+  const [pourcentage, setPourcentage]: any = useState(0);
+  const [viewPourcentage, setViewPourcentage] = useState("");
 
   useEffect(() => {
     get(
@@ -74,15 +75,39 @@ const Resultat = () => {
 
   const getMessage = (score: any) => {
     if (score < 50) {
-      return <span className="text-danger">Tu peux mieux faire. Révise la leçon attentivement avant de retenter l'exercice.</span>;
+      return (
+        <span className="text-danger">
+          Tu peux mieux faire. Révise la leçon attentivement avant de retenter
+          l'exercice.
+        </span>
+      );
     } else if (score === 50) {
-      return <span className="text-success">C’est bien, mais il y a encore des points à améliorer. Reprends l’exercice pour progresser.</span>;
+      return (
+        <span className="text-success">
+          C’est bien, mais il y a encore des points à améliorer. Reprends
+          l’exercice pour progresser.
+        </span>
+      );
     } else if (score > 50 && score < 75) {
-      return <span className="text-success">Bon travail ! Continue à t’entraîner pour atteindre un niveau encore meilleur.</span>;
+      return (
+        <span className="text-success">
+          Bon travail ! Continue à t’entraîner pour atteindre un niveau encore
+          meilleur.
+        </span>
+      );
     } else if (score >= 75 && score < 100) {
-      return "Très bien ! Tu es sur la bonne voie, mais il reste encore un peu de marge pour t’améliorer.";
+      return (
+        <span style={{ color: "#A5B68D" }}>
+          Très bien ! Tu es sur la bonne voie, mais il reste encore un peu de
+          marge pour t’améliorer.
+        </span>
+      );
     } else if (score === 100) {
-      return "Excellent ! Bravo à toi, continue comme ça pour maintenir ce niveau !";
+      return (
+        <span style={{ color: "#A5B68D" }}>
+          Excellent ! Bravo à toi, continue comme ça pour maintenir ce niveau !
+        </span>
+      );
     }
   };
 
@@ -133,7 +158,26 @@ const Resultat = () => {
               <div className="fw-bold fs-5 text-uppercase text-center text-primary mt-5 mb-3">
                 {getMessage(pourcentage)}
               </div>
-              <div className="text-center">vous avez obtenu une note de <span className="text-primary fw-bold">{parseInt(pourcentage) + "%"}</span></div>
+              <div className="text-center">
+                vous avez obtenu une note de{" "}
+                {pourcentage < 50 ? (
+                  <span className="text-danger fw-bold">
+                    {parseInt(pourcentage) + "%"}
+                  </span>
+                ) : (
+                  <>
+                    {pourcentage <= 75 ? (
+                      <span className="text-success fw-bold">
+                        {parseInt(pourcentage) + "%"}
+                      </span>
+                    ) : (
+                      <span className="fw-bold" style={{color:"#A5B68D"}}>
+                        {parseInt(pourcentage) + "%"}
+                      </span>
+                    )}
+                  </>
+                )}
+              </div>
               <div className="fw-bold fs-1 text-uppercase text-center text-primary mt-3 mb-3">
                 {sessionStorage.getItem("point")}/
                 {sessionStorage.getItem("quotient")}

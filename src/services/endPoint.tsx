@@ -10,6 +10,8 @@ const endPoint = {
   res_lecons_eleves: "res-lecons-eleves",
   evaluations: "evaluations",
   questions: "questions",
+  messagesDefilants:"messages-defilants",
+  parametres:"parametres",
 
   register: "register",
   getOtp: "get-otp",

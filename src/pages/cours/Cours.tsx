@@ -69,6 +69,59 @@ const Lecon = () => {
     get(endPoint.lecons + `/${leconSlug}`, setLecon, setLoaded);
   }, [user]);
 
+  const [scrollCount, setScrollCount] = useState(0);
+  const [totalScrollDistance, setTotalScrollDistance] = useState(0);
+
+  const startTime = performance.now();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition =
+        window.scrollY || document.documentElement.scrollTop; // Position actuelle du scroll
+      setScrollCount((prevCount) => prevCount + 1); // Incrémenter le compteur de scrolls
+      setTotalScrollDistance(scrollPosition); // Enregistrer la position
+      console.log(`Position de scroll : ${scrollPosition}px`);
+    };
+
+    const sendMetrics = () => {
+      const endTime = performance.now();
+      const timeSpent = Math.round((endTime - startTime) / 1000);
+
+      const hours = Math.floor(timeSpent / 3600);
+      const minutes = Math.floor((timeSpent % 3600) / 60);
+      const seconds = timeSpent % 60;
+      const formattedTime = [
+        String(hours).padStart(2, "0"),
+        String(minutes).padStart(2, "0"),
+        String(seconds).padStart(2, "0"),
+      ].join(":");
+
+      /*axios
+        .post("/api/user-metrics", {
+          time_spent: formattedTime,
+          scroll_count: scrollCount,
+          total_scroll_distance: totalScrollDistance,
+          page: window.location.pathname,
+        })
+        .catch((err) => {
+          console.error("Erreur lors de l'envoi des données :", err);
+        });*/
+
+      console.log(
+        `Temps passé : ${formattedTime}, Scrolls : ${scrollCount}, Distance totale : ${totalScrollDistance}px`
+      );
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("beforeunload", sendMetrics);
+
+    return () => {
+      sendMetrics();
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("beforeunload", sendMetrics);
+    };
+  }, [scrollCount, totalScrollDistance]);
+
   useEffect(() => {
     mediaConfig();
   }, [datas]);
@@ -110,7 +163,7 @@ const Lecon = () => {
                 <div className="my-2 fw-bold text-14">{lecon?.label}</div>
               </div>
               <div className="d-flex justify-content-center text-primary">
-                <TimerWithVisibility />
+                {/**<TimerWithVisibility /> */}
               </div>
               {/**
                * <div className="col-12 mt-2 text-14 py-2 text-center bg-gray">
