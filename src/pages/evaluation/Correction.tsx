@@ -19,6 +19,7 @@ import {
 } from "@ionic/react";
 import { checkmarkCircle, closeCircle, helpCircle } from "ionicons/icons";
 import { Retour } from "../../components/Retour";
+import { Container } from "../../components";
 //import "./CorrectionPage.css";
 
 // Données des corrections
@@ -61,26 +62,29 @@ const Correction: React.FC = () => {
   useEffect(() => {
     let user_response: any = sessionStorage.getItem("user_response");
     user_response = JSON.parse(user_response);
-    setCorrections(user_response)
+    setCorrections(user_response);
   }, []);
   return (
     <IonPage>
       {/* En-tête */}
       <IonHeader>
         <IonToolbar color="primary">
-          <IonTitle>Correction</IonTitle>
+          <Container>
+            <IonTitle>Correction</IonTitle>
+          </Container>
         </IonToolbar>
       </IonHeader>
 
       <IonContent className="ion-padding">
-        {/* Bouton Retour */}
+        <Container>
+          {/* Bouton Retour */}
         <div>
           <Retour />
         </div>
 
         {/* Liste des corrections */}
         <IonList>
-          {corrections.map((correction: any, idx : any) => (
+          {corrections.map((correction: any, idx: any) => (
             <IonCard key={correction.id}>
               <IonCardHeader>
                 <IonCardTitle>Question {idx + 1}</IonCardTitle>
@@ -93,13 +97,17 @@ const Correction: React.FC = () => {
                     <IonLabel>
                       <h3>Vos choix :</h3>
                       <IonText>
-                        {correction.user_reponse[0] !== "Pas de réponse"
-                          ? <>
-                          {
-                            correction.type === "REPONSE_SAISIE" ? correction.user_reponse: correction.choix[correction?.user_reponse[0] - 1]
-                          }
+                        {correction.user_reponse[0] !== "Pas de réponse" ? (
+                          <>
+                            {correction.type === "REPONSE_SAISIE"
+                              ? correction.user_reponse
+                              : correction.choix[
+                                  correction?.user_reponse[0] - 1
+                                ]}
                           </>
-                          : "Aucune réponse"}
+                        ) : (
+                          "Aucune réponse"
+                        )}
                       </IonText>
                     </IonLabel>
                   </IonItem>
@@ -107,10 +115,9 @@ const Correction: React.FC = () => {
                     <IonLabel>
                       <h3>Réponse correcte :</h3>
                       <IonText color="success">
-                        
-                        {
-                            correction.type === "REPONSE_SAISIE" ? correction.choix : correction.choix[parseInt(correction.reponses) - 1]
-                        }
+                        {correction.type === "REPONSE_SAISIE"
+                          ? correction.choix
+                          : correction.choix[parseInt(correction.reponses) - 1]}
                       </IonText>
                     </IonLabel>
                   </IonItem>
@@ -144,6 +151,7 @@ const Correction: React.FC = () => {
             </IonCard>
           ))}
         </IonList>
+        </Container>
       </IonContent>
     </IonPage>
   );

@@ -42,7 +42,9 @@ const Apropos: React.FC = () => {
       {/* En-tête */}
       <IonHeader>
         <IonToolbar color="primary">
-          <IonTitle>À Propos</IonTitle>
+          <Container>
+            <IonTitle>À Propos</IonTitle>
+          </Container>
         </IonToolbar>
       </IonHeader>
 

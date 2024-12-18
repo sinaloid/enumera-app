@@ -57,6 +57,9 @@ export const Option: React.FC<Props> = ({ idPopover, childen }) => {
             <IonItem button={true} detail={false} onClick={e => goTo(e, '/messages')}>
               Actualités
             </IonItem>
+            <IonItem button={true} detail={false} onClick={e => goTo(e, '/mon-compte')}>
+              Mon comptes
+            </IonItem>
             <IonItem button={true} detail={false} onClick={e => goTo(e, '/apropos')}>
               A propos
             </IonItem>

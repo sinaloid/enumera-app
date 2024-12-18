@@ -12,6 +12,7 @@ const endPoint = {
   questions: "questions",
   messagesDefilants:"messages-defilants",
   parametres:"parametres",
+  utilisateurs: "utilisateurs",
 
   register: "register",
   getOtp: "get-otp",

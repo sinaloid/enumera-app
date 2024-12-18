@@ -21,6 +21,7 @@ import "./MessageList.css";
 import { useRequest } from "../../hooks";
 import { endPoint } from "../../services";
 import { useHistory } from "react-router";
+import { Container } from "../../components";
 
 // Simuler un chargement des données d'événements (normalement cela viendrait d'une API)
 const fetchEvenements = () => {
@@ -98,90 +99,94 @@ const MessageList: React.FC = () => {
       {/* En-tête */}
       <IonHeader>
         <IonToolbar color="primary">
-          <IonTitle>Actualités & Événements</IonTitle>
+          <Container>
+            <IonTitle>Actualités & Événements</IonTitle>
+          </Container>
         </IonToolbar>
       </IonHeader>
 
       {/* Contenu */}
       <IonContent className="ion-padding">
-        {/* Bouton Retour */}
-        <div>
-          <Retour />
-        </div>
+        <Container>
+          {/* Bouton Retour */}
+          <div>
+            <Retour />
+          </div>
 
-        {/* Liste des événements */}
-        <IonList>
-          {loading ? (
-            // Affichage du skeleton loader pendant le chargement
-            <>
-              <IonCard>
-                <IonCardHeader>
-                  <IonCardTitle>
-                    <IonSkeletonText animated style={{ width: "80%" }} />
-                  </IonCardTitle>
-                  <IonCardSubtitle>
-                    <IonSkeletonText animated style={{ width: "60%" }} />
-                  </IonCardSubtitle>
-                </IonCardHeader>
-                <IonCardContent>
-                  <IonSkeletonText animated style={{ width: "100%" }} />
-                </IonCardContent>
-              </IonCard>
-              <IonCard>
-                <IonCardHeader>
-                  <IonCardTitle>
-                    <IonSkeletonText animated style={{ width: "80%" }} />
-                  </IonCardTitle>
-                  <IonCardSubtitle>
-                    <IonSkeletonText animated style={{ width: "60%" }} />
-                  </IonCardSubtitle>
-                </IonCardHeader>
-                <IonCardContent>
-                  <IonSkeletonText animated style={{ width: "100%" }} />
-                </IonCardContent>
-              </IonCard>
-            </>
-          ) : (
-            // Une fois les événements chargés, on les affiche
-            datas.map((data) => (
-              <IonCard
-                key={data.id}
-                onClick={(e) => {
-                  e.preventDefault();
-                  history.push("messages/" + data.slug);
-                }}
-              >
-                <IonCardHeader>
-                  <IonCardTitle>{data.titre}</IonCardTitle>
-                  <IonCardSubtitle>
-                    <div className="d-flex justify-content-between">
-                      <div className="bg-primary-light text-primary px-3 rounded-1 ms-auto">
-                        {data.type}
+          {/* Liste des événements */}
+          <IonList>
+            {loading ? (
+              // Affichage du skeleton loader pendant le chargement
+              <>
+                <IonCard>
+                  <IonCardHeader>
+                    <IonCardTitle>
+                      <IonSkeletonText animated style={{ width: "80%" }} />
+                    </IonCardTitle>
+                    <IonCardSubtitle>
+                      <IonSkeletonText animated style={{ width: "60%" }} />
+                    </IonCardSubtitle>
+                  </IonCardHeader>
+                  <IonCardContent>
+                    <IonSkeletonText animated style={{ width: "100%" }} />
+                  </IonCardContent>
+                </IonCard>
+                <IonCard>
+                  <IonCardHeader>
+                    <IonCardTitle>
+                      <IonSkeletonText animated style={{ width: "80%" }} />
+                    </IonCardTitle>
+                    <IonCardSubtitle>
+                      <IonSkeletonText animated style={{ width: "60%" }} />
+                    </IonCardSubtitle>
+                  </IonCardHeader>
+                  <IonCardContent>
+                    <IonSkeletonText animated style={{ width: "100%" }} />
+                  </IonCardContent>
+                </IonCard>
+              </>
+            ) : (
+              // Une fois les événements chargés, on les affiche
+              datas.map((data) => (
+                <IonCard
+                  key={data.id}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    history.push("messages/" + data.slug);
+                  }}
+                >
+                  <IonCardHeader>
+                    <IonCardTitle>{data.titre}</IonCardTitle>
+                    <IonCardSubtitle>
+                      <div className="d-flex justify-content-between">
+                        <div className="bg-primary-light text-primary px-3 rounded-1 ms-auto">
+                          {data.type}
+                        </div>
                       </div>
-                    </div>
-                    <div>
-                      <IonIcon icon={calendar} color="medium" />
-                      {"  "}
-                      Du <strong>{data.date_debut}</strong> au{" "}
-                      <strong>{data.date_fin}</strong>
-                    </div>
-                  </IonCardSubtitle>
-                </IonCardHeader>
-                <IonCardContent>
-                  {/* Si l'événement est expansé, on affiche tout le contenu */}
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: `${truncateContent(
-                        data.contenu,
-                        200
-                      )} <strong class="text-primary fw-bold">Voir plus</strong>`,
-                    }}
-                  ></div>
-                </IonCardContent>
-              </IonCard>
-            ))
-          )}
-        </IonList>
+                      <div>
+                        <IonIcon icon={calendar} color="medium" />
+                        {"  "}
+                        Du <strong>{data.date_debut}</strong> au{" "}
+                        <strong>{data.date_fin}</strong>
+                      </div>
+                    </IonCardSubtitle>
+                  </IonCardHeader>
+                  <IonCardContent>
+                    {/* Si l'événement est expansé, on affiche tout le contenu */}
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: `${truncateContent(
+                          data.contenu,
+                          200
+                        )} <strong class="text-primary fw-bold">Voir plus</strong>`,
+                      }}
+                    ></div>
+                  </IonCardContent>
+                </IonCard>
+              ))
+            )}
+          </IonList>
+        </Container>
       </IonContent>
     </IonPage>
   );

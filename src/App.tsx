@@ -55,6 +55,7 @@ import StatsDetail from "./pages/profile/StatsDetail";
 import { Message } from "./pages/notifications";
 import Apropos from "./pages/apropos/Apropos";
 import MessageList from "./pages/notifications/MessageList";
+import { MonCompte } from "./pages/compte/MonCompte";
 
 setupIonicReact();
 
@@ -137,6 +138,12 @@ const App: React.FC = () => {
             path="/messages/:messageSlug"
           >
             <Message />
+          </Route>
+          <Route
+            exact
+            path="/mon-compte"
+          >
+            <MonCompte />
           </Route>
           <Route
             exact

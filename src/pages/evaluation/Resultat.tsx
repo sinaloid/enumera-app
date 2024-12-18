@@ -36,6 +36,7 @@ import { useHistory, useParams } from "react-router";
 import useFunction from "../../hooks/useFunction";
 import ResultatSvg from "../../components/svg/ResultatSvg";
 import DynamicSVG from "./DynamicSVG";
+import { ContentHeader } from "../../components/ContentHeader";
 
 const Resultat = () => {
   const { user } = useAuth();
@@ -94,81 +95,64 @@ const Resultat = () => {
     setSection(name);
   };
 
-  const getMessage = (score: any) => {
-    if (score < 50) {
-      return (
-        <div className="bg-primary-light text-danger p-2 rounded">
-          Tu peux mieux faire. Révise la leçon attentivement avant de retenter
-          l'exercice.
-        </div>
-      );
-    } else if (score === 50) {
-      return (
-        <div
-          className="text-black p-2 rounded"
-          style={{ backgroundColor: "#9dca91" }}
-        >
-          C’est bien, mais il y a encore des points à améliorer. Reprends
-          l’exercice pour progresser.
-        </div>
-      );
-    } else if (score > 50 && score < 75) {
-      return (
-        <div className="text-black p-2" style={{ backgroundColor: "#9dca91" }}>
-          Bon travail ! Continue à t’entraîner pour atteindre un niveau encore
-          meilleur.
-        </div>
-      );
-    } else if (score >= 75 && score < 100) {
-      return (
-        <div className="bg-gray p-2 rounded" style={{ color: "#41ad48" }}>
-          Très bien ! Tu es sur la bonne voie, mais il reste encore un peu de
-          marge pour t’améliorer.
-        </div>
-      );
-    } else if (score === 100) {
-      return (
-        <div className="bg-gray p-2 rounded" style={{ color: "#41ad48" }}>
-          Excellent ! Bravo à toi, continue comme ça pour maintenir ce niveau !
-        </div>
-      );
-    }
+  const getMessage = (score: number) => {
+    const messages = [
+      {
+        condition: (score: number) => score < 50,
+        content: (
+          <div className="bg-primary-light text-danger p-2 d-inline-block rounded">
+            Tu peux mieux faire. Révise la leçon attentivement avant de retenter
+            l'exercice.
+          </div>
+        ),
+      },
+      {
+        condition: (score: number) => score === 50,
+        content: (
+          <div
+            className="text-black p-2 rounded"
+            style={{ backgroundColor: "#9dca91" }}
+          >
+            C’est bien, mais il y a encore des points à améliorer. Reprends
+            l’exercice pour progresser.
+          </div>
+        ),
+      },
+      {
+        condition: (score: number) => score > 50 && score < 75,
+        content: (
+          <div className="text-black p-2 d-inline-block rounded" style={{ backgroundColor: "#9dca91" }}>
+            Bon travail ! Continue à t’entraîner pour atteindre un niveau encore
+            meilleur.
+          </div>
+        ),
+      },
+      {
+        condition: (score: number) => score >= 75 && score < 100,
+        content: (
+          <div className="bg-gray p-2 d-inline-block rounded" style={{ color: "#41ad48" }}>
+            Très bien ! Tu es sur la bonne voie, mais il reste encore un peu de
+            marge pour t’améliorer.
+          </div>
+        ),
+      },
+      {
+        condition: (score: number) => score === 100,
+        content: (
+          <div className="bg-gray p-2 rounded d-inline-block" style={{ color: "#41ad48" }}>
+            Excellent ! Bravo à toi, continue comme ça pour maintenir ce niveau !
+          </div>
+        ),
+      },
+    ];
+  
+    return messages.find((message) => message.condition(score))?.content || null;
   };
+  
 
   return (
     <IonPage>
-      <IonHeader>
-        <Container>
-          <IonToolbar>
-            <IonButtons slot="start">
-              <div className="d-flex align-items-center">
-                <img
-                  className="rounded-5"
-                  width={"48px"}
-                  src="https://picsum.photos/400/?random"
-                />
-                <div className="ms-2 line-height">
-                  <div className="fw-bold text-uppercase text-14 line-height">
-                    {user?.nom + " " + user?.prenom}
-                  </div>
-                  <div className="text-12 text-muted">12/05/2024</div>
-                </div>
-              </div>
-            </IonButtons>
-            {/** */}
-            <IonTitle></IonTitle>
-            <IonButtons slot="end">
-              <IonButton className="back-circle">
-                <IonIcon
-                  color="medium"
-                  className="text-24"
-                  icon={notifications}
-                />
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </Container>
-      </IonHeader>
+      <ContentHeader idPopover={"resultat"} />
       <IonContent>
         <Container>
           <div className="container-fluid">

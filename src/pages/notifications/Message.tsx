@@ -179,7 +179,9 @@ const Message = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar color="primary">
-          <IonTitle>Actualités & Événements</IonTitle>
+          <Container>
+            <IonTitle>Actualités & Événements</IonTitle>
+          </Container>
         </IonToolbar>
       </IonHeader>
       <IonContent>
