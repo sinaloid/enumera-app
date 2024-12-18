@@ -30,6 +30,7 @@ import {
   ExerciceSvg,
   Container,
   LinkList,
+  MessageAnimate,
 } from "../../components";
 import { useAuth, useDataProvider, useNavigate, useRequest } from "../../hooks";
 import { endPoint } from "../../services";
@@ -37,6 +38,7 @@ import { useParams } from "react-router";
 import useFunction from "../../hooks/useFunction";
 import { Retour } from "../../components/Retour";
 import { ContentHeader } from "../../components/ContentHeader";
+import ClassePeriodeSelect from "../../components/ClassePeriodeSelect";
 
 const Lecon = () => {
   const { user } = useAuth();
@@ -56,10 +58,24 @@ const Lecon = () => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    get(endPoint.lecons + `/classe/${classeSlug}/periode/${periodeSlug}/matiere/${matiereSlug}/chapitre/${chapitreSlug}`, setDatas, setLoaded);
+    get(
+      endPoint.lecons +
+        `/classe/${classeSlug}/periode/${periodeSlug}/matiere/${matiereSlug}/chapitre/${chapitreSlug}`,
+      setDatas,
+      setLoaded
+    );
     get(endPoint.chapitres + `/${chapitreSlug}`, setChapitre, setLoaded);
     get(endPoint.matieres + `/${matiereSlug}`, setMatiere, setLoaded);
   }, [user]);
+
+  const callbackLecon = (classeSlug: string, periodeSlug: string) => {
+    get(
+      endPoint.lecons +
+        `/classe/${classeSlug}/periode/${periodeSlug}/matiere/${matiereSlug}/chapitre/${chapitreSlug}`,
+      setDatas,
+      setLoaded
+    );
+  };
   return (
     <IonPage>
       <ContentHeader idPopover={"lecon"} />
@@ -67,31 +83,28 @@ const Lecon = () => {
         <Container>
           <div className="container-fluid">
             <div className="row mt-2 text-14">
-            <div className="col-12 px-0">
-                <LinkList />
-              </div>
               <div className="text-center fw-bold fs-5">
                 <div className="icon-circle bg-primary mx-auto d-flex align-items-center justify-content-center text-white">
-                {dataShared?.classe?.label}<br />
-                {" "+matiere?.abreviation}
+                  {dataShared?.classe?.label}
+                  <br />
+                  {" " + matiere?.abreviation}
                 </div>
-                <div className="my-2">
-                {chapitre?.label}
-                </div>
+                <div className="my-2">{chapitre?.label}</div>
               </div>
               <div className="col-12 mt-2 text-14 py-2 text-center bg-gray">
-                Messages défilantes : Actualités et évènements
+                <MessageAnimate />
               </div>
+              
             </div>
           </div>
           <div className="container-fluid">
             <div className="row mt-2">
-            <div className="col-12 px-0">
+              <div className="col-12 px-0">
                 <LinkList />
               </div>
               <div className="col-12 text-center mt-2 mb-3">
                 <span className="bg-primary-light text-danger fw-bold px-3 py-2">
-                Liste des leçons
+                  Liste des leçons
                 </span>
               </div>
               <Retour />

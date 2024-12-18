@@ -189,17 +189,14 @@ const Item: React.FC<ItemProps> = ({ data }) => {
               <span>1 Cours</span>
             </div>
             <div className="d-flex ms-auto align-items-end">
-              <span>
-                {data.evaluation_lecon_reponse_eleves?.length
-                  ? data.evaluation_lecon_reponse_eleves[
-                      data.evaluation_lecon_reponse_eleves?.length - 1
-                    ]?.point_obtenu + " pts"
-                  : "Pas encore lu"}{" "}
-              </span>
+              {localStorage.getItem(data.slug) ? (
+                <span>{localStorage.getItem(data.slug)} d'apprentissage</span>
+              ) : (
+                <span>Pas encore lu</span>
+              )}
             </div>
           </div>
         </div>
-        
       </div>
     </div>
   );
@@ -224,7 +221,11 @@ const ItemEvaluation: React.FC<ItemProps> = ({ data }) => {
   }, []);
   return (
     <div
-      className={`col-12 px-0 mb-3 ${pointObtenu ? " bg-gray" : "bg-secondary-light"}`}
+      className={`col-12 px-0 mb-3 ${
+        pointObtenu
+          ? " bg-secondary-light border-5 border-bottom border-success"
+          : " bg-gray"
+      }`}
       onClick={(e) => {
         navigate(
           e,
@@ -234,7 +235,13 @@ const ItemEvaluation: React.FC<ItemProps> = ({ data }) => {
       }}
     >
       <div className="d-flex">
-        <div className={`${pointObtenu ? "bg-primary-light text-primary " : " bg-secondary text-white"} rect-icon`}>
+        <div
+          className={`${
+            pointObtenu
+              ? " bg-secondary text-white "
+              : "  bg-primary-light text-primary"
+          } rect-icon`}
+        >
           <span className="fw-bold text-uppercase">
             <ExerciceSvg />
           </span>

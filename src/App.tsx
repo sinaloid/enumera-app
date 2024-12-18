@@ -46,12 +46,15 @@ import LoginPage from "./pages/auth/LoginPage";
 import { useAuth } from "./hooks";
 import { useEffect } from "react";
 import { Chapitre, Cours, Lecon, LeconDetail, Matiere } from "./pages";
-import { Evaluation, EvaluationLecon } from "./pages/evaluation";
+import { Correction, Evaluation, EvaluationLecon } from "./pages/evaluation";
 import CoursStatsDetail from "./pages/stats/CoursStatsDetail";
 import RegisterPage from "./pages/auth/RegisterPage";
 import VerifyOtpPage from "./pages/auth/VerifyOtpPage";
 import Resultat from "./pages/evaluation/Resultat";
 import StatsDetail from "./pages/profile/StatsDetail";
+import { Message } from "./pages/notifications";
+import Apropos from "./pages/apropos/Apropos";
+import MessageList from "./pages/notifications/MessageList";
 
 setupIonicReact();
 
@@ -110,6 +113,30 @@ const App: React.FC = () => {
             path="/classes/:classeSlug/periodes/:periodeSlug/matieres/:matiereSlug/chapitres/:chapitreSlug/lecons/:leconSlug/cours/:coursSlug"
           >
             <Cours />
+          </Route>
+          <Route
+            exact
+            path="/messages"
+          >
+            <MessageList />
+          </Route>
+          <Route
+            exact
+            path="/apropos"
+          >
+            <Apropos />
+          </Route>
+          <Route
+            exact
+            path="/correction"
+          >
+            <Correction />
+          </Route>
+          <Route
+            exact
+            path="/messages/:messageSlug"
+          >
+            <Message />
           </Route>
           <Route
             exact

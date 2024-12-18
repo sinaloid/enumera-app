@@ -20,7 +20,12 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { notifications, chevronDown, chevronForward } from "ionicons/icons";
+import {
+  notifications,
+  chevronDown,
+  chevronForward,
+  calendar,
+} from "ionicons/icons";
 import { useEffect, useRef, useState } from "react";
 import {
   ClasseSvg,
@@ -37,8 +42,9 @@ import { useParams } from "react-router";
 import ZoomableIframe from "./ZoomableIframe";
 import { ContentHeader } from "../../components/ContentHeader";
 import TimerWithVisibility from "../../components/TimerWithVisibility";
+import { Retour } from "../../components/Retour";
 
-const Lecon = () => {
+const Message = () => {
   const { user } = useAuth();
   const [section, setSection] = useState(0);
   const [datas, setDatas] = useState<any>([]);
@@ -56,6 +62,7 @@ const Lecon = () => {
     chapitreSlug,
     leconSlug,
     coursSlug,
+    messageSlug,
   }: any = useParams();
   const [loaded, setLoaded] = useState(false);
   const [matiere, setMatiere] = useState<any>("");
@@ -63,10 +70,7 @@ const Lecon = () => {
   const [lecon, setLecon] = useState<any>("");
 
   useEffect(() => {
-    get(endPoint.cours + `/${coursSlug}`, setDatas, setLoaded);
-    get(endPoint.matieres + `/${matiereSlug}`, setMatiere, setLoaded);
-    get(endPoint.chapitres + `/${chapitreSlug}`, setChapitre, setLoaded);
-    get(endPoint.lecons + `/${leconSlug}`, setLecon, setLoaded);
+    get(endPoint.messagesDefilants + `/${messageSlug}`, setDatas, setLoaded);
   }, [user]);
 
   const [scrollCount, setScrollCount] = useState(0);
@@ -111,7 +115,7 @@ const Lecon = () => {
         `Temps passé : ${formattedTime}, Scrolls : ${scrollCount}, Distance totale : ${totalScrollDistance}px`
       );
 
-      const times = sumTimes([formattedTime,formattedTime])
+      const times = sumTimes([formattedTime, formattedTime]);
       localStorage.setItem(coursSlug, times);
     };
 
@@ -150,10 +154,10 @@ const Lecon = () => {
     console.log(videos);
   };
 
-  function sumTimes(times : any) {
+  function sumTimes(times: any) {
     let totalSeconds = 0;
 
-    times.forEach((time : any) => {
+    times.forEach((time: any) => {
       const [hours, minutes, seconds] = time.split(":").map(Number);
       totalSeconds += hours * 3600 + minutes * 60 + seconds;
     });
@@ -173,37 +177,15 @@ const Lecon = () => {
   }
   return (
     <IonPage>
-      <ContentHeader idPopover={"cours"} />
+      <IonHeader>
+        <IonToolbar color="primary">
+          <IonTitle>Actualités & Événements</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonContent>
         <Container>
           <div className="container-fluid">
-            <div className="row mt-2 text-14 border-bottom">
-              <div className="text-center fs-5">
-                <div className="icon-circle bg-primary mx-auto d-flex align-items-center justify-content-center text-white">
-                  {dataShared?.classe?.label}
-                  <br />
-                  {" " + matiere?.abreviation}
-                </div>
-                <div className="my-2 text-12 fw-bold">{chapitre?.label}</div>
-                <div className="my-2 fw-bold text-14">{lecon?.label}</div>
-              </div>
-              <div className="d-flex justify-content-center text-primary">
-                {/**<TimerWithVisibility /> */}
-                <TimerWithVisibility />
-              </div>
-              {/**
-               * <div className="col-12 mt-2 text-14 py-2 text-center bg-gray">
-                Messages défilantes : Actualités et évènements
-              </div>
-               */}
-            </div>
-          </div>
-          <div className="container-fluid">
             <div className="row mt-2">
-              <div className="col-12 px-0">
-                <LinkList />
-              </div>
-
               {loaded && (
                 <>
                   {/**
@@ -211,10 +193,22 @@ const Lecon = () => {
                     dangerouslySetInnerHTML={{ __html: datas?.description }}
                   />
                    */}
-
-                  <ZoomableIframe
-                    description={datas?.description}
-                  ></ZoomableIframe>
+                  <Retour />
+                  <div className="text-center mb-3 text-primary fs-1">
+                    {datas.titre}
+                  </div>
+                  <div className="text-center mb-3 text-primary fs-5">
+                    <span>
+                      <IonIcon icon={calendar} className="fs-4" />{" "}
+                    </span>{" "}
+                    <br />
+                    <span>
+                      {new Date(datas.date_debut).toLocaleDateString() +
+                        " - " +
+                        new Date(datas.date_fin).toLocaleDateString()}
+                    </span>
+                  </div>
+                  <div dangerouslySetInnerHTML={{ __html: datas?.contenu }} />
                 </>
               )}
               {!loaded && <Skeleton />}
@@ -310,4 +304,4 @@ const ChapitreItem: React.FC<LeconProps> = ({ data }) => {
   );
 };
 
-export default Lecon;
+export default Message;

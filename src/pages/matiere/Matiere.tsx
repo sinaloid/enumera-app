@@ -57,9 +57,11 @@ const Matiere = () => {
   useEffect(() => {
     const classe = localStorage.getItem("classe");
     const periode = localStorage.getItem("periode");
+    //console.log(classe)
+    getParam()
     if (user) {
       get(
-        endPoint.matieres + "/classe/" + dataShared.classe?.slug + "/periode/" + dataShared.periode?.slug,
+        endPoint.matieres + "/classe/" + classe + "/periode/" + periode,
         setDatas,
         setLoaded
       );
@@ -75,6 +77,17 @@ const Matiere = () => {
       setLoaded
     );
   };
+
+  const saveParam = (datas : any) => {
+    console.log(datas)
+    datas?.map((data : any) =>{
+      localStorage.setItem(data.key,data.value)
+    })
+  }
+
+  const getParam = () => {
+    get(endPoint.parametres,saveParam, () => {})
+  }
   return (
     <IonPage>
       <ContentHeader idPopover={"matiere"} />

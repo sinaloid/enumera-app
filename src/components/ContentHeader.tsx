@@ -7,8 +7,9 @@ import logo from "../assets/images/logo.png";
 
 interface PropsHeader {
     idPopover:any
+    childen? : any
 }
-export const ContentHeader : React.FC<PropsHeader> = ({idPopover}) => {
+export const ContentHeader : React.FC<PropsHeader> = ({idPopover, childen}) => {
   const { user } :any = useAuth();
 
   return (
@@ -34,6 +35,7 @@ export const ContentHeader : React.FC<PropsHeader> = ({idPopover}) => {
           </IonButtons>
           {/** */}
           <IonTitle></IonTitle>
+          {childen}
           <Option idPopover={idPopover} />
         </IonToolbar>
       </Container>

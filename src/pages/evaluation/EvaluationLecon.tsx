@@ -51,6 +51,7 @@ const EvaluationLecon = () => {
     sessionStorage.removeItem("user_response");
     sessionStorage.removeItem("quotient");
     sessionStorage.setItem("user_point", "0");
+    localStorage.setItem("evaluationEnCours", evaluationSlug);
   }, [user]);
 
   useEffect(() => {
@@ -127,13 +128,12 @@ const EvaluationLecon = () => {
         setPoint(pointActuel);
         sessionStorage.setItem("user_point", questions.point);
         sessionStorage.setItem("point", "" + pointActuel);
-
-        let oldQuotient: any = sessionStorage.getItem("quotient");
-        oldQuotient = oldQuotient ? oldQuotient : 0;
-        const quotient = parseInt(oldQuotient) + parseInt(questions.point);
-        sessionStorage.setItem("quotient", "" + quotient);
       }
     }
+    let oldQuotient: any = sessionStorage.getItem("quotient");
+    oldQuotient = oldQuotient ? oldQuotient : 0;
+    const quotient = parseInt(oldQuotient) + parseInt(questions.point);
+    sessionStorage.setItem("quotient", "" + quotient);
   };
 
   const verifyReponseSaisie = () => {
@@ -150,13 +150,12 @@ const EvaluationLecon = () => {
         setPoint(pointActuel);
         sessionStorage.setItem("user_point", questions.point);
         sessionStorage.setItem("point", "" + pointActuel);
-
-        let oldQuotient: any = sessionStorage.getItem("quotient");
-        oldQuotient = oldQuotient ? oldQuotient : 0;
-        const quotient = parseInt(oldQuotient) + parseInt(questions.point);
-        sessionStorage.setItem("quotient", "" + quotient);
       }
     }
+    let oldQuotient: any = sessionStorage.getItem("quotient");
+    oldQuotient = oldQuotient ? oldQuotient : 0;
+    const quotient = parseInt(oldQuotient) + parseInt(questions.point);
+    sessionStorage.setItem("quotient", "" + quotient);
   };
 
   const saveUserResponse = () => {
@@ -265,7 +264,7 @@ const EvaluationLecon = () => {
                       />
                     )}
 
-                    <UploadFile />
+                    {/**<UploadFile /> */}
 
                     <div className="d-flex justify-content-center mt-3">
                       {questionIndex + 1 <= datas.question_lecons?.length && (
@@ -532,8 +531,6 @@ const ChoixMultipleImage: React.FC<DataQuestion> = ({ questions, choix }) => {
     </div>
   );
 };
-
-
 
 const UploadFile = () => {
   return (

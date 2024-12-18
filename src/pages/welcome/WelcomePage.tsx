@@ -36,7 +36,7 @@ const WelcomePage: React.FC = () => {
             />
           </div>
           <h1 className="text-center ion-text-uppercase title-3 my-3 fw-bold">
-            Bienvenue dans WIlofo
+            Bienvenue sur WIlofo
           </h1>
 
           <div className="d-flex ion-justify-content-center mb-3">
@@ -59,7 +59,14 @@ const WelcomePage: React.FC = () => {
             </IonButton>
           </div>
           <div className="d-flex ion-justify-content-center">
-            <span className="text-primary fw-bold">Continuer sans compte</span>
+            <div className="p-2 px-3 rounded-5 d-inline-block">
+              <span
+                className="text-primary fw-bold bg-primary-light  animate-charcter zoom-text"
+                onClick={(e) => navigate(e, "apropos")}
+              >
+                Clicquez ici pour Découvrir Wilofo
+              </span>
+            </div>
           </div>
         </Container>
       </IonContent>
