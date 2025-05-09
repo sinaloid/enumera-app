@@ -35,7 +35,7 @@ import ExerciceSvg from "../../components/svg/ExerciceSvg";
 import LessonSvg from "../../components/svg/LessonSvg";
 import SuccessSvg from "../../components/svg/SuccessSvg";
 import { useAuth, useDataProvider, useNavigate, useRequest } from "../../hooks";
-import { endPoint } from "../../services";
+import { endPoint, request } from "../../services";
 import { Classe, Periode } from "./components";
 import useRequestMatiere from "./hooks/useRequest";
 import useFunction from "../../hooks/useFunction";
@@ -45,6 +45,7 @@ const CoursStats = () => {
   const { user } = useAuth();
   const [section, setSection] = useState(0);
   const [datas, setDatas] = useState<any>([]);
+  const [meets,setMeets] = useState<any>([]);
   const [periodes, setPeriodes] = useState<any>([]);
   const [classes, setClasses] = useState<any>([]);
   const { get } = useRequest();
@@ -55,13 +56,29 @@ const CoursStats = () => {
   const { dataShared }: any = useDataProvider();
   const [loaded, setLoaded] = useState(false);
   const { logout } = useAuth();
+  const headers = {
+    headers: {
+      'Authorization' : `Bearer ${user?.token}`,
+      "Content-Type": "multipart/form-data",
+    },
+  };
 
   useEffect(() => {
     if (user) {
       getPeriodeClasse(setPeriodes, setClasses);
       get(endPoint.matieres, setDatas, setLoaded);
+      getMeet()
     }
   }, [user]);
+
+  const getMeet = () => {
+    request.get("my-meets",headers).then((res) => {
+      console.log(res.data)
+      setMeets(res.data)
+    }).catch((error)=>{
+      console.log(error)
+    })
+  }
 
   const deconnection = (e: any) => {
     logout();
@@ -133,7 +150,7 @@ const CoursStats = () => {
                 </span>
               </div>
               {loaded &&
-                [].map((data: any) => {
+                meets.map((data: any) => {
                   return <Item data={data} key={data.slug} />;
                 })}
               {!loaded && <Skeleton />}
@@ -252,9 +269,11 @@ const Item: React.FC<ItemProps> = ({ data }) => {
     <div
       className="col-12 px-0 bg-primary-light mb-3"
       onClick={(e) => {
+        localStorage.setItem('meet_link', JSON.stringify(data))
         navigate(
           e,
-          `classes/${dataShared?.classe?.slug}/periodes/${dataShared?.periode?.slug}/matieres/${data?.slug}/stats`
+          //`classes/${dataShared?.classe?.slug}/periodes/${dataShared?.periode?.slug}/matieres/${data?.slug}/stats`
+          'classes-virtuelles'
         );
         updateDataShared("matiere", data);
       }}
@@ -262,18 +281,18 @@ const Item: React.FC<ItemProps> = ({ data }) => {
       <div className="d-flex">
         <div className="bg-primary rect-icon">
           <span className="text-white fw-bold text-uppercase">
-            {data.abreviation}
+            {/*data.abreviation*/ "Meet"}
           </span>
         </div>
         <div className="w-100 text-primary position-relative">
           <div className="d-flex align-items-center px-2">
-            <span className="fw-bold me-auto">{data.label}</span>
+            <span className="fw-bold me-auto">{data?.meet?.title}</span>
             <IonIcon icon={chevronForward} />
           </div>
           <div className="d-flex px-2 mt-3">
             <div className="border-start border-end text-center px-2 border-primary">
               <LessonSvg /> <br />
-              <span>0 Chapitres</span>
+              <span>{data?.meet?.duration}h de session</span>
             </div>
           </div>
         </div>

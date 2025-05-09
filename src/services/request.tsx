@@ -4,10 +4,10 @@ import { useStorage } from '../hooks';
 const { getUser, deleteUser } = useStorage()
 
 
-export const BASE_URL = "https://api.enumera.tech/";
+//export const BASE_URL = "https://api.enumera.tech/";
 //export const BASE_URL = "https://wilofo-api.enumera.tech/";
-//export const BASE_URL = "https://api.wilofo.com/";
-//export const BASE_URL = "http://127.0.0.1:8000/";
+export const BASE_URL = "https://api.wilofo.com/";
+//export const BASE_URL = "http://127.0.0.1:8080/";
 const API_URL = `${BASE_URL}api/`;
 
 const request = axios.create({

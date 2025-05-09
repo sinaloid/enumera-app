@@ -56,6 +56,7 @@ import { Message } from "./pages/notifications";
 import Apropos from "./pages/apropos/Apropos";
 import MessageList from "./pages/notifications/MessageList";
 import { MonCompte } from "./pages/compte/MonCompte";
+import JitsiPage from "./pages/classe-virtuelle/JitsiPage";
 
 setupIonicReact();
 
@@ -144,6 +145,12 @@ const App: React.FC = () => {
             path="/mon-compte"
           >
             <MonCompte />
+          </Route>
+          <Route
+            exact
+            path="/classes-virtuelles"
+          >
+            <JitsiPage />
           </Route>
           <Route
             exact
