@@ -62,6 +62,7 @@ const ZoomableHtmlView: React.FC<ZoomableHtmlViewProps> = ({ description }) => {
       >
         <BlockNoteView
           editor={editor}
+          editable={false}
         />
       </div>
 
