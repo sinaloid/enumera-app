@@ -34,7 +34,7 @@ import {
 import { useAuth, useDataProvider, useNavigate, useRequest } from "../../hooks";
 import { endPoint } from "../../services";
 import { useParams } from "react-router";
-import ZoomableIframe from "./ZoomableIframe";
+import ZoomableIframe from "./ZoomableHtmlView";
 import { ContentHeader } from "../../components/ContentHeader";
 import TimerWithVisibility from "../../components/TimerWithVisibility";
 
