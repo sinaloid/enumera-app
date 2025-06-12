@@ -1,3 +1,8 @@
 .bn-mantine > div {
   padding: 0;
 }
+
+figure > video, p > video, span > video, * > video {
+  width: 100%;
+  height: auto;
+}

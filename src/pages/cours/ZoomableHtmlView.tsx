@@ -6,7 +6,7 @@ import "@blocknote/core/fonts/inter.css";
 import { useCreateBlockNote } from "@blocknote/react";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
-import "./Zoom.css"
+import "./Zoom.css";
 //import { locales } from "@blocknote/core";
 
 interface ZoomableHtmlViewProps {
@@ -35,19 +35,21 @@ const ZoomableHtmlView: React.FC<ZoomableHtmlViewProps> = ({ description }) => {
     console.log(blocks);
   };
 
-
-
   return (
     <div style={{ padding: "1rem" }}>
       <div className="d-flex align-items-center mb-3">
         <Retour />
         <div className="ms-auto d-flex gap-2">
+          <div className="d-flex align-items-center justify-content-center ">
+            <strong className="text-primary bg-primary-light rounded p-1">{Math.round(zoom * 100)}%</strong>
+          </div>
           <IonButton size="small" onClick={handleZoomIn}>
             Zoom +
           </IonButton>
           <IonButton size="small" onClick={handleZoomOut}>
             Zoom -
           </IonButton>
+          
         </div>
       </div>
 
@@ -58,14 +60,23 @@ const ZoomableHtmlView: React.FC<ZoomableHtmlViewProps> = ({ description }) => {
           width: `${100 / zoom}%`,
         }}
         className="m-0 p-0 bg-gray-100"
-      //dangerouslySetInnerHTML={{ __html: description || "<p>Aucune description</p>" }}
+        dangerouslySetInnerHTML={{
+          __html: description || "<p>Aucune description</p>",
+        }}
       >
-        <BlockNoteView
+        {/**
+         * <BlockNoteView
           editor={editor}
           editable={false}
         />
+         */}
       </div>
-
+      {/**
+       * <BlockNoteView
+          editor={editor}
+          editable={false}
+        />
+       */}
     </div>
   );
 };
